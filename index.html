@@ -1,0 +1,3015 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<title>SD YPU - Sistem Informasi Sekolah</title>
+<style>
+  :root {
+    --bg:#f4f7fb;
+    --card:#fff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --blue:#2563eb;
+    --green:#16a34a;
+    --amber:#d97706;
+    --rose:#e11d48;
+    --slate:#334155;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 12% 12%, rgba(255, 204, 51, 0.28), transparent 22%),
+      radial-gradient(circle at 88% 82%, rgba(255, 122, 0, 0.24), transparent 24%),
+      var(--bg);
+    color:var(--text);
+  }
+
+  body.preload {
+    visibility: hidden;
+  }
+  body.preload-ready {
+    visibility: visible;
+  }
+  
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: nowrap;
+  }
+
+  .action-row,
+  .sheetbtn,
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+
+  .action-row .quick-action i,
+  .sheetbtn i,
+  .btn i{
+    font-size:16px;
+    line-height:1;
+  }
+  
+  .school-logo {
+    height: 48px;
+    width: auto;
+    display: block;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.08));
+    position: relative;
+    top: -1px;
+  }
+
+  /* Laptop / Desktop */
+  @media (min-width:701px){
+    .header-card .brand h1{
+      font-size:30px;
+    }
+  
+    .header-card .brand .sub{
+      font-size:13px;
+    }
+  }
+
+  @media (min-width:701px){
+    .header-card .brand .sub{
+      font-size:17px;
+    }
+  }
+  
+  @media (max-width:700px) and (orientation: portrait) {
+    .school-logo{
+      height:38px;
+    }
+  
+    h1{
+      font-size:32px;
+      line-height:1;
+      margin:0;
+    }
+  
+    .sub{
+      font-size:14px;
+      margin-top:2px;
+    }
+  }
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:18px 20px 104px;
+  }
+  .card{
+    background: rgba(255,255,255,0.70);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.25);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,.06),
+        inset 0 1px 0 rgba(255,255,255,.25);
+
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+
+  .card-flat{
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    padding:0 !important;
+  }
+
+  .action-row{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }
+  
+  .action-row .quick-action{
+    flex:1 1 0;
+    width:0;
+  }
+
+  @media (max-width:700px){
+    .action-row{
+      gap:8px;
+    }
+  }
+  
+  h1 { 
+    margin:0; 
+    font-size:38px; 
+    line-height:1.02; 
+    font-weight:900;
+    letter-spacing:0.5px;
+    background: linear-gradient(90deg, #d61f26 0%, #ff7a00 55%, #ffcc33 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 0 rgba(255,255,255,.42);
+  }
+
+  .sub {
+    color: var(--muted);
+    margin: 2px 0 0;
+    line-height: 1.2;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  
+  .top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .actions-top { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .iconbtn, .btn, .select, .input {
+    border:1px solid rgba(255,122,0,.18);
+    background:#fff;
+    border-radius:16px;
+    padding:12px 14px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+  }
+
+  #prevDay,
+  #nextDay{
+      min-height:48px;
+      height:48px;
+      min-width:52px;
+      padding:0;
+      font-size:18px;
+  }
+  
+  .iconbtn:disabled {
+    opacity:.45;
+    cursor:not-allowed;
+  }
+
+  #prevDay,
+#nextDay {
+    width: 72px;
+    min-width: 72px;
+    height: 72px;
+    min-height: 72px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 1;
+}
+  
+  .select, .input {
+    cursor:text;
+    outline:none;
+    width:100%;
+  }
+
+  .select{
+    ffont-family:'Poppins',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+    cursor:pointer;
+
+    cursor:pointer;
+  }
+
+  
+  
+  .btn.primary{
+    background:linear-gradient(
+      90deg,
+      #2563eb 0%,
+      #3b82f6 50%,
+      #60a5fa 100%
+    );
+    color:#fff;
+    border:1px solid #1d4ed8;
+    box-shadow:0 12px 24px rgba(37,99,235,.22);
+  }
+  .btn.success { background:#fff5e8; color:#c2410c; border-color:#ffd59a; }
+  .btn.warn { background:#fff7ed; color:#c2410c; border-color:#ffd59a; }
+  .btn.danger { background:#fff1f2; color:#be123c; border-color:#fecdd3; }
+  .btn.secondary { background:rgba(255,255,255,.92); color:var(--slate); border-color:rgba(255,122,0,.12); }
+  .btn.softblue { background:#fff4e6; color:#d97706; border-color:#ffd59a; }
+  .toolbar {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    align-items:end;
+  }
+  .field label {
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    margin:0 0 6px 2px;
+  }
+  .date-row {
+    display: grid;
+    grid-template-columns: 72px 1fr 72px;
+    gap: 10px;
+    align-items: stretch;
+}
+
+  .brand{
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+
+.brand > *:not(.school-doodle){
+  position: relative;
+  z-index: 1;
+}
+  
+.datebox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: linear-gradient(90deg, rgba(255,45,45,.08), rgba(255,122,0,.12), rgba(255,204,51,.14));
+    color: #9a3412;
+    border: 1px solid rgba(255,122,0,.18);
+    border-radius: 16px;
+
+    padding: 12px 14px;
+    font-weight: 800;
+    text-align: center;
+    min-height: 48px;
+}
+  .meta {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .pill {
+    border:1px solid var(--line);
+    background:#f8fafc;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--slate);
+  }
+  
+  .week {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:12px;
+  }
+  .day {
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:16px;
+    padding:10px 6px;
+    text-align:center;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .day.active { background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,245,235,.95)); border-color:#ffb15c; color:#d97706; box-shadow:0 8px 20px rgba(255,122,0,.12); }
+  .day.holiday-day{
+  background:rgba(255,241,242,.82);
+  color:#be123c;
+  opacity:.92;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:
+    0 0 12px rgba(225,29,72,.10),
+    inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+.day.holiday-day .n{
+  color:#be123c;
+}
+  .day .n { font-size:18px; font-weight:800; margin-top:4px; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; }
+  .stat { border-radius:16px; padding:12px 10px; text-align:center; border:1px solid var(--line); opacity:0.55;}
+  .stat .num { font-size:22px; font-weight:900; }
+  .stat .lab { font-size:12px; font-weight:700; margin-top:2px; }
+  .s-H {
+    background:rgba(236,253,245,.75);
+    color:#047857;
+    border:1px solid #bbf7d0;
+  }
+  
+  .s-S {
+    background:rgba(255,251,235,.6);
+    color:#b45309;
+    border:1px solid #fde68a;
+  }
+  
+  .s-I {
+    background:rgba(239,246,255,.6);
+    color:#1d4ed8;
+    border:1px solid #bfdbfe;
+  }
+  
+  .s-A {
+    background:rgba(255,241,242,.6);
+    color:#be123c;
+    border:1px solid #fecdd3;
+  }
+  .searchbar {
+    display:flex;
+    gap:8px;
+    align-items:center;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:16px;
+    padding:12px 14px;
+  }
+  .searchbar input {
+    border:none;
+    outline:none;
+    width:100%;
+    font-size:15px;
+    background:transparent;
+  }
+  .student {
+    background:#f8fafc;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:12px;
+    margin-top:6px;
+  }
+  .head { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .name { font-size:15px; font-weight:800; line-height:1.25; }
+  .nisn { color:var(--muted); font-size:12px; margin-top:4px; }
+  .badge{
+    width:24px;
+    height:24px;
+    min-width:24px;
+    min-height:24px;
+
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:10px;
+    font-weight:700;
+
+    border:1px solid #e2e8f0;
+    background:#fff;
+    color:#94a3b8;
+
+    flex-shrink:0;
+    opacity:.7;
+
+    width:24px !important;
+    height:24px !important;
+    min-width:24px !important;
+    min-height:24px !important;
+    max-width:24px !important;
+    max-height:24px !important;
+
+    flex:0 0 24px !important;
+    padding:0 !important;
+    overflow:hidden;
+}
+
+  .badge.empty{
+    background:#fff;
+    color:transparent;
+    border:1px solid #e2e8f0;
+
+    width:24px !important;
+    height:24px !important;
+    min-width:24px !important;
+    min-height:24px !important;
+    max-width:24px !important;
+    max-height:24px !important;
+
+    flex:0 0 24px !important;
+}
+  
+  .badge.s-H{
+    background:rgba(22,163,74,.12);
+    color:#047857;
+    border-color:rgba(22,163,74,.25);
+    opacity:.7;
+  }
+  
+  .badge.s-S{
+    background:rgba(217,119,6,.12);
+    color:#b45309;
+    border-color:rgba(217,119,6,.25);
+    opacity:.7;
+  }
+  
+  .badge.s-I{
+    background:rgba(37,99,235,.12);
+    color:#1d4ed8;
+    border-color:rgba(37,99,235,.25);
+    opacity:.7;
+  }
+  
+  .badge.s-A{
+    background:rgba(225,29,72,.12);
+    color:#be123c;
+    border-color:rgba(225,29,72,.25);
+    opacity:.7;
+  }
+  
+  .choice{
+    padding:10px 8px;
+    border-radius:14px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    color:#94a3b8;
+    font-weight:700;
+    cursor:pointer;
+    font-size:13px;
+    opacity:.45;
+    transition:all .15s ease;
+  }
+  .choice{
+    padding:12px 8px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-weight:800;
+    cursor:pointer;
+    font-size:14px;
+    transition:all .15s ease;
+    opacity:.35;
+  }
+
+  .choice:hover{
+    opacity:0.85;
+  }
+
+  .choice.active{
+    opacity:1;
+  }
+  
+.choice.active.H {
+    background:#ecfdf5;
+    color:#047857;
+    border-color:#bbf7d0;
+    opacity:1;
+    font-weight:800;
+}
+
+.choice.active.S {
+    background:#fffbeb;
+    color:#b45309;
+    border-color:#fde68a;
+}
+
+.choice.active.I {
+    background:#eff6ff;
+    color:#1d4ed8;
+    border-color:#bfdbfe;
+}
+
+.choice.active.A {
+    background:#fff1f2;
+    color:#be123c;
+    border-color:#fecdd3;
+}
+  .bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(255,255,255,.70);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-top: 1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+        0 -8px 32px rgba(0,0,0,.06),
+        inset 0 1px 0 rgba(255,255,255,.25);
+  }
+
+  .holiday-bottom{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+  
+    background:rgba(255,255,255,.70);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  
+    border-top:1px solid rgba(255,255,255,.25);
+  
+    box-shadow:
+        0 -8px 32px rgba(0,0,0,.06),
+        inset 0 1px 0 rgba(255,255,255,.25);
+  
+    z-index:20;
+  }
+  
+  .holiday-bottom .in{
+    width:min(96vw,1400px);
+    margin:0 auto;
+    padding:10px 20px;
+    display:flex;
+    gap:10px;
+  }
+  
+  .bottom .in{
+    width:min(96vw, 1400px);
+    margin:0 auto;
+    padding:10px 20px;
+    display:flex;
+    gap:10px;
+  }
+
+  @media (max-width:700px) {
+    .bottom .in{
+      width:calc(100% - 24px);
+      margin:0 auto;
+      padding:10px 12px;
+      box-sizing:border-box;
+    }
+  }
+  
+  .overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:50;
+  }
+  .sheet {
+    width:min(1100px, 100%);
+    max-height:92vh;
+    overflow:auto;
+    background:#fff;
+    border-radius:26px 26px 0 0;
+    padding:14px;
+    box-shadow:0 -20px 40px rgba(0,0,0,.18);
+  }
+  .sheetbar { width:56px; height:5px; border-radius:999px; background:#cbd5e1; margin:0 auto 12px; }
+  .sheetgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .full { grid-column:1/-1; }
+  .sheetbtn {
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:18px;
+    padding:18px 14px;
+    font-weight:800;
+    text-align:center;
+    cursor:pointer;
+  }
+  #allI {
+    background:rgba(37,99,235,.10);
+    color:#1d4ed8;
+    border:1px solid rgba(37,99,235,.25);
+}
+  .sheetbtn.blue {
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+}
+  
+  .sheetbtn.green { background:#ecfdf5; color:#047857; border-color:#bbf7d0; }
+  .sheetbtn.amber { background:#fffbeb; color:#b45309; border-color:#fde68a; }
+  .sheetbtn.rose { background:#fff1f2; color:#be123c; border-color:#fecdd3; }
+  .small { font-size:12px; color:var(--muted); line-height:1.5; }
+  .muted { color:var(--muted); }
+  .toolbar-roster {
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:10px;
+    align-items:end;
+  }
+  .field label {
+    display:block;
+    font-size:12px;
+    font-weight:800;
+    color:var(--muted);
+    margin:0 0 6px 2px;
+  }
+  .roster-list {
+    margin-top:12px;
+    display:grid;
+    gap:10px;
+  }
+  .roster-row {
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:12px;
+    background:#f8fafc;
+  }
+  .roster-row-grid {
+    display:grid;
+    grid-template-columns:72px 1.1fr 88px 1.6fr 100px;
+    gap:8px;
+    align-items:center;
+  }
+  .roster-row-grid .input { padding:10px 12px; border-radius:14px; }
+  .rownum {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#fff;
+    font-weight:800;
+    color:var(--text);
+  }
+  .checkbox {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--slate);
+  }
+  .empty {
+    padding:18px 8px;
+    color:var(--muted);
+    text-align:center;
+  }
+  .toast {
+    position:fixed;
+    left:50%;
+    bottom:86px;
+    transform:translateX(-50%);
+    background:#0f172a;
+    color:#fff;
+    border-radius:999px;
+    padding:10px 14px;
+    font-size:13px;
+    font-weight:700;
+    z-index:70;
+    display:none;
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
+  }
+  .inline-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .subtle-panel {
+    margin-top:12px;
+    padding:12px;
+    background:#f8fafc;
+    border:1px solid var(--line);
+    border-radius:18px;
+  }
+  .split-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .roster-actions {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .class-delete-wrap {
+    margin-top:10px;
+    display:flex;
+    justify-content:flex-end;
+  }
+
+  .report-card {
+    margin-bottom:12px;
+  }
+  .report-grid{
+    display:grid;
+    grid-template-columns: 1.15fr .85fr 1.25fr;
+    gap:10px;
+    align-items:end;
+  }
+  .report-actions{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:8px;
+    width:100%;
+    align-self:end;
+  }
+
+  .report-actions .btn{
+    width:100%;
+    min-width:0;
+    white-space:nowrap;
+  }
+  
+  @media (max-width: 900px) {
+    .report-grid{
+      grid-template-columns: 1fr;
+    }
+  
+    .report-actions{
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .report-actions .btn {
+
+      width:100%;
+    }
+  }
+
+  .quick-action.hadir-all{
+    background:rgba(22,163,74,.10);
+    border:1px solid rgba(22,163,74,.35);
+    color:#15803d;
+  }
+  
+  .action-row .hadir-all{
+    flex:1;
+  }
+  
+  .report-hint {
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .report-compact {
+    font-size:12px;
+    color:var(--muted);
+    margin-top:8px;
+  }
+  .report-note {
+    margin-top:6px;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .choices{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:10px;
+  }
+  
+  @media (max-width:900px) {
+    .toolbar-roster, .roster-row-grid { grid-template-columns:1fr; }
+  }
+  @media (max-width:700px) {
+    h1 { font-size:24px; }
+    .stats, .week, .choices, .sheetgrid { gap:6px; }
+    .choice { font-size:12px; padding:9px 6px; }
+    .date-row { grid-template-columns:auto 1fr auto; }
+    .roster-row-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:520px) {
+    #loginPage .login-shell > .card { padding:24px 22px 22px; }
+    #loginPage .login-title { font-size:24px; }
+    #loginPage .login-subtitle { font-size:14px; }
+    #loginPage .login-note { font-size:12px; }
+  }
+
+  .page { display:none; min-height:100vh; }
+  .page.active { display:block; }
+  body:not(.app-ready) #appPage,
+  body:not(.app-ready) .bottom,
+  body:not(.app-ready) .overlay {
+    display:none !important;
+  }
+
+  #loginPage.active ~ .bottom,
+  #loginPage.active ~ .overlay {
+    display:none !important;
+  }
+
+  body.app-ready .bottom {
+    display:block;
+  }
+
+
+  #loginPage.active {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+
+  .rownum {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: var(--text);
+  flex: 0 0 auto;
+}
+  
+  #loginPage .login-shell {
+    position:relative;
+    width:100%;
+    max-width:680px;
+  }
+
+  #loginPage .login-shell::before {
+    content:"";
+    position:absolute;
+    inset:18px;
+    border-radius:34px;
+    background:rgba(15,23,42,.06);
+    filter:blur(24px);
+    z-index:0;
+  }
+
+  #loginPage .login-shell > .card {
+    position:relative;
+    z-index:1;
+    padding:42px 46px 36px;
+    border-radius:36px;
+  }
+
+  #loginPage .login-title {
+    margin:12px 0 6px;
+    font-size:25px;
+    line-height:1.08;
+    font-weight:800;
+    letter-spacing:-0.02em;
+  }
+
+  #loginPage .login-subtitle {
+    margin:0 0 20px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.55;
+  }
+
+  #loginPage .login-note {
+    margin-top:20px;
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+  }
+
+  .class-label{
+      display:none;
+      
+  }
+
+  .sheetbtn.cream{
+   background:rgba(148,163,184,.10);
+  color:#475569;
+  border:1px solid rgba(148,163,184,.25);
+  }
+  
+  .hidden-select {
+    display:none !important;
+  }
+
+  #loginPage .row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:14px 0 4px;
+    flex-wrap:wrap;
+  }
+
+  .pin-sheet{
+  width:min(560px, calc(100vw - 32px));
+  max-height:90vh;
+  overflow:auto;
+  padding:22px 22px 20px;
+  border-radius:26px;
+  box-sizing:border-box;
+}
+
+.pin-sheet .field{
+  width:100%;
+}
+
+.pin-sheet .input{
+  width:100%;
+  box-sizing:border-box;
+}
+
+.pin-sheet .sheetgrid{
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+  
+  #loginPage .remember {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    color:#374151;
+    font-weight:600;
+  }
+
+  #loginPage .remember input {
+    width:17px;
+    height:17px;
+    accent-color:#ff7a00;
+  }
+
+  #loginPage .forgot {
+    color:#d61f26;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+  }
+
+  #loginPage .forgot:hover { text-decoration:underline; }
+
+
+#holidayPage .holiday-list{
+  margin-top:12px;
+  display:grid;
+  gap:10px;
+  max-height:none;
+  overflow:visible;
+  padding-right:0;
+}
+
+#holidayPage .holiday-item{
+  background:#f8fafc;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:12px;
+}
+  
+
+#loginPage form {
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  #loginPage .field {
+    margin-bottom:0;
+  }
+
+  #loginPage .field label {
+    margin-bottom:10px;
+  }
+
+  #loginPage .select,
+  #loginPage .input,
+  #loginPage .btn.primary {
+    width:100%;
+    display:block;
+    box-sizing:border-box;
+  }
+
+  #loginPage .btn.primary {
+    min-height:56px;
+    padding:15px 18px;
+    margin-top:2px;
+  }
+
+.brand{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:24px;
+    overflow:hidden;
+    padding:8px 12px;
+}
+
+
+.header-card{
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,.75);
+
+    border:2px solid rgba(255,122,0,.25);
+
+    box-shadow:
+      0 0 0 1px rgba(255,180,60,.25),
+      0 8px 24px rgba(255,122,0,.08);
+    padding: 8px 16px !important;
+    border-radius: 22px;
+  }
+  
+
+
+.quick-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.quick-action{
+  border:none;
+  border-radius:18px;
+  min-height:56px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight:800;
+  letter-spacing:.2px;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
+}
+
+.quick-action i{
+  font-size:16px;
+  line-height:1;
+}
+
+.quick-action.logout{
+  background:rgba(245,158,11,.10);
+  border:1px solid rgba(245,158,11,.35);
+  color:#b45309;
+}
+
+.quick-action.reset{
+  background:rgba(220,38,38,.08);
+  border:1px solid rgba(220,38,38,.35);
+  color:#dc2626;
+}
+
+@media (max-width:700px){
+  .quick-actions{
+    gap:8px;
+  }
+
+  .quick-action{
+    min-height:50px;
+    padding:12px 12px;
+    font-size:13px;
+  }
+}
+
+#openSheet2{
+  border:2px solid #cbd5e1;
+  background:#fff;
+  color:#334155;
+  box-shadow:
+    0 0 0 1px rgba(148,163,184,.15);
+}
+
+#saveBtn{
+  border:1px solid #1d4ed8 !important;
+}
+
+#loginBtn{
+  border:2px solid #1d4ed8 !important;
+}
+
+.sheet-sep{
+  height:1px;
+  background:rgba(148,163,184,.22);
+  margin:14px 0;
+}
+
+.holiday-cell{
+  background:#ffb3b3 !important;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+  
+.sheetbtn.holiday{
+  background:rgba(225,29,72,.08);
+  color:#be123c;
+  border:1px solid rgba(225,29,72,.25);
+}
+
+.holiday-top-card{
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+}
+  
+/* Aurora */
+.header-card::before{
+    content: "";
+    position: absolute;
+
+    top: -80px;
+    right: -100px;
+
+    width: 500px;
+    height: 300px;
+
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(255,210,80,.25) 0%,
+        rgba(255,180,60,.15) 30%,
+        rgba(255,120,0,.08) 55%,
+        transparent 75%
+      );
+
+    filter: blur(45px);
+    pointer-events: none;
+  }
+
+.holiday-bottom{
+  display:none;
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:9999;
+
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border-top:1px solid rgba(255,255,255,.25);
+}
+
+#holidayPage.active ~ .holiday-bottom{
+  display:block;
+}
+
+#holidayPage .report-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:8px;
+  align-items:end;
+}
+
+@media (max-width:700px){
+
+  #holidayPage .report-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  #holidayPage .holiday-show-btn{
+    width:100%;
+    height:56px;
+    margin-top:0;
+  }
+
+  #holidayPage .holiday-show-wrap{
+    margin-top:0;
+  }
+
+}
+  
+@media (max-width:700px){
+
+  #holidayPage .report-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  #holidayPage .report-grid .field{
+    width:100%;
+  }
+
+  #holidayPage .holiday-show-btn{
+    width:100%;
+    height:56px;
+    justify-content:center;
+  }
+
+}
+
+#holidayPage{
+  padding: 12px 0 104px;
+}
+
+#holidayPage .holiday-top-card{
+  position: sticky;
+  top: -15px;
+  z-index: 40;
+
+  background:#fff !important;
+
+  border:2px solid rgba(255,122,0,.22);
+
+  box-shadow:
+    0 0 0 1px rgba(255,200,80,.25),
+    0 8px 24px rgba(255,122,0,.08);
+
+  overflow:hidden;
+}
+
+#holidayNote{
+  min-height:72px;
+  resize:none;
+  padding-top:12px;
+  line-height:1.4;
+}
+  
+#holidayPage .holiday-top-card .holiday-title{
+  position: relative;
+  z-index: 1;
+
+  text-align: center;
+  margin: 0 0 16px 0;
+
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+
+  background: linear-gradient(
+    90deg,
+    #d61f26 0%,
+    #ff7a00 55%,
+    #ffcc33 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 2px 0 rgba(255,255,255,.42);
+}
+
+@media (max-width:700px){
+  #holidayPage .holiday-top-card .holiday-title{
+    font-size:17px;
+  }
+}
+
+#holidayPage .holiday-top-card .field{
+  position: relative;
+  z-index: 1;
+}
+
+#holidayPage .holiday-list{
+  margin-top:12px;
+  display:grid;
+  gap:10px;
+  max-height:none;
+  overflow:visible;
+  padding-right:0;
+}
+
+#holidayPage .holiday-top-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#fff;
+  pointer-events:none;
+  z-index:0;
+}
+  
+#holidayPage .report-grid .field{
+  margin-bottom:0;
+}
+
+#holidayPage .holiday-show-wrap{
+  display:flex;
+  align-items:end;
+}
+
+#holidayPage .holiday-show-btn{
+  height:48px;
+  min-height:48px;
+  padding:0 18px;
+  white-space:nowrap;
+}
+  
+#holidayPage .holiday-show-btn{
+  height:48px;
+  min-height:48px;
+  padding:0 18px;
+  white-space:nowrap;
+}
+  
+.header-card::after{
+    content:"";
+    position:absolute;
+
+    top:20px;
+    right:80px;
+
+    width:250px;
+    height:80px;
+
+    background:
+      linear-gradient(
+        110deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+      );
+
+    filter:blur(12px);
+
+    transform:rotate(-15deg);
+
+    pointer-events:none;
+}
+
+.header-card .top,
+.header-card .brand{
+  position: relative;
+  z-index: 1;
+}
+
+.brand{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow: visible;
+  padding: 0 !important;
+  gap: 12px;
+  min-height: 70px;
+}
+
+.brand > *{
+    position:relative;
+    z-index:1;
+}
+
+.btn,
+.iconbtn,
+.sheetbtn,
+.quick-action{
+  border:1px solid rgba(15,23,42,.12);
+}
+
+
+  .mapel-controls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:12px;
+  }
+
+  .mapel-controls .field label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:900;
+    color:var(--slate);
+  }
+
+  .mapel-controls .select,
+  .mapel-controls .input{
+    width:100%;
+    min-height:54px;
+  }
+
+  @media (max-width:700px){
+    .mapel-controls{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+  }
+
+</style>
+</head>
+<body class="preload">
+
+<div id="loginPage" class="page active">
+  <div class="login-shell">
+    <div class="card">
+      <div class="inner">
+        <div class="brand">
+          <img src="logo-sekolah.png" class="school-logo" alt="Logo">
+          <div>
+            <h1>SD YPU</h1>
+            <p class="sub">Sistem Presensi Mapel</p>
+          </div>
+        </div>
+
+        <div class="login-subtitle"></div>
+        
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginClassSelect">Akun Mapel</label>
+            <select class="select" id="loginClassSelect"></select>
+          </div>
+
+          <div class="field">
+            <label for="loginPin">PIN</label>
+            <input class="input" id="loginPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="Masukkan PIN">
+          </div>
+
+          <div class="row">
+            <label class="remember">
+              <input type="checkbox" id="rememberLogin">
+              Ingat saya
+            </label>
+            <a href="#" class="forgot" id="clearSaved">Lupa pin</a>
+          </div>
+
+          <button class="btn primary" type="submit" id="loginBtn">Masuk</button>
+        </form>
+
+        <div class="login-note">PIN default 123456.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="appPage" class="page">
+
+<div class="wrap">
+  
+    
+
+  <div class="card header-card">
+    <div class="top">
+      <div class="brand">
+        <img src="logo-sekolah.png" class="school-logo" alt="Logo">
+        <div>
+          <h1>SD YPU</h1>
+          <p class="sub">Sistem Presensi Mapel</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <div class="mapel-controls">
+      <div class="field">
+        <label for="classSelect">Kelas</label>
+        <select class="select" id="classSelect"></select>
+      </div>
+      <div class="field">
+        <label for="attendanceDate">Tanggal</label>
+        <input class="input" id="attendanceDate" type="date">
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="quick-action logout" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        LOGOUT
+      </button>
+
+      <button class="quick-action reset" id="clearAllAttendance">
+        <i class="fa-solid fa-rotate-left"></i>
+        RESET DATA
+      </button>
+    </div>
+
+    <div class="action-row">
+      <button class="quick-action hadir-all" id="allH">
+        <i class="fa-solid fa-user-check"></i>
+        SEMUA HADIR
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="searchbar">
+      <span>🔎</span>
+      <input id="q" placeholder="Cari nama / NISN"/>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+</div>
+
+<div id="holidayPage" class="page">
+  <div class="wrap">
+    
+      <div class="card holiday-top-card">
+        <div class="holiday-title">
+          📅 Daftar Hari Libur
+        </div>
+      
+        <div class="field">
+          <label for="holidayDate">Tanggal Libur</label>
+          <input class="input" id="holidayDate" type="date">
+        </div>
+      
+        <div class="field" style="margin-top:12px;">
+          <label for="holidayNote">Keterangan</label>
+        
+          <textarea
+            class="input"
+            id="holidayNote"
+            rows="2"
+            placeholder="Contoh: Idul Adha"></textarea>
+        </div>
+      </div>
+
+    <div class="card">
+      <div class="report-card" style="margin-bottom:0;">
+        <div class="report-grid">
+          <div class="field">
+            <label for="holidayMonthSelect">Bulan</label>
+            <select class="select" id="holidayMonthSelect"></select>
+          </div>
+
+          <div class="field">
+            <label for="holidayYearSelect">Tahun</label>
+            <select class="select" id="holidayYearSelect"></select>
+          </div>
+
+          <div class="holiday-show-wrap">
+            <button class="btn secondary" id="showHolidayBtn" style="
+              width:100%;
+              min-height:56px;
+              border:2px solid #cbd5e1;
+              box-shadow:0 0 0 1px rgba(148,163,184,.15);
+            ">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Tampilkan</span>
+            </button>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="holiday-list" id="holidayList"></div>
+    </div>
+  </div>
+</div>
+  
+<div class="bottom">
+  <div class="in">
+    
+
+    <button class="btn" id="openSheet2" style="flex:1">
+      <i class="fa-solid fa-gear"></i>
+      <span>Options</span>
+    </button>
+    
+    <button class="btn primary" id="saveBtn" style="flex:1">
+      <i class="fa-solid fa-floppy-disk"></i>
+      <span>Simpan</span>
+    </button>
+  </div>
+</div>
+
+
+  
+<div class="overlay" id="overlay">
+  <div class="sheet">
+  <div class="sheetbar"></div>
+
+    
+  
+
+  <div class="card report-card">
+
+      <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:12px;
+        ">
+            <div style="
+                flex:1;
+                text-align:left;
+                font-size:15px;
+                font-weight:900;
+            ">
+                Rekap Presensi Semester Mapel
+            </div>
+        
+            <button class="iconbtn" id="closeSheetBtn">
+                ✕
+            </button>
+        </div>
+    
+    
+      <div class="report-grid">
+        
+        
+        <div class="field">
+          <label for="reportSemesterSelect">Semester</label>
+          <select class="select" id="reportSemesterSelect"></select>
+        </div>
+        <div class="field">
+          <label for="reportYearSelect">Tahun Pelajaran</label>
+          <select class="select" id="reportYearSelect"></select>
+        </div>
+
+        <div class="report-actions">
+          <button class="btn secondary" id="printReportBtn" style="
+            min-width:140px;
+            border:2px solid #cbd5e1;
+            box-shadow:0 0 0 1px rgba(148,163,184,.15);
+          ">
+            <i class="fa-solid fa-print"></i>
+            <span>Cetak</span>
+          </button>
+        
+          <button class="btn primary" id="exportExcelBtn">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>Export ke Excel</span>
+          </button>
+        </div>
+        
+      </div>
+      
+    </div>
+
+    <div class="sheetgrid" style="margin-top:12px">
+      <button class="sheetbtn holiday full" id="holidayBtn">
+        <i class="fa-solid fa-calendar-xmark"></i>
+        <span>Daftar Hari Libur</span>
+      </button>
+      <button class="sheetbtn amber full" id="changePinBtn">
+        <i class="fa-solid fa-key"></i>
+        <span>Ubah PIN</span>
+      </button>
+    </div>
+
+    
+    <div style="height:14px"></div>
+    
+    
+    
+    
+    
+    <div class="small" style="margin-top:12px">
+      Catatan : Data Kehadiran disimpan ke database hanya saat klik tombol simpan.
+    </div>
+  </div>
+</div>
+  
+ 
+<div class="overlay" id="pinOverlay" style="display:none;">
+  <div class="sheet pin-sheet">
+    <div class="sheetbar"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div>
+        <div style="font-size:18px;font-weight:900">Ubah PIN</div>
+        <div class="small">Masukkan PIN lama, lalu buat PIN baru.</div>
+      </div>
+      <button class="iconbtn" id="closePinSheet">✕</button>
+    </div>
+
+    <div style="margin-top:14px;display:grid;gap:12px;">
+      <div class="field">
+        <label for="oldPin">PIN Lama</label>
+        <input class="input" id="oldPin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="Masukkan PIN lama">
+      </div>
+
+      <div class="field">
+        <label for="newPin">PIN Baru</label>
+        <input class="input" id="newPin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="Masukkan PIN baru">
+      </div>
+
+      <div class="field">
+        <label for="confirmPin">Konfirmasi PIN Baru</label>
+        <input class="input" id="confirmPin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="Ulangi PIN baru">
+      </div>
+
+      <div class="sheetgrid">
+        <button class="sheetbtn cream" id="cancelPinBtn">Batal</button>
+        <button class="sheetbtn amber" id="savePinBtn">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+<div class="overlay" id="rosterOverlay">
+  
+  <div class="sheet">
+    <div class="sheetbar"></div>
+    <div class="split-head">
+      <div>
+        <div style="font-size:18px;font-weight:900">Kelola Siswa</div>
+        <div class="small">Edit nama siswa per kelas dan simpan langsung ke database.</div>
+      </div>
+      <div class="roster-actions">
+        <button class="iconbtn" id="closeRoster">✕</button>
+      </div>
+    </div>
+
+    <div class="subtle-panel">
+      <div class="toolbar-roster">
+        <div class="field">
+          <label>Siswa Kelas</label>
+          <select class="select" id="rosterClassSelect"></select>
+        </div>
+        <div class="field">
+          <label>Pindah ke kelas</label>
+          <select class="select" id="copyTargetSelect"></select>
+        </div>
+        <div class="inline-actions" style="justify-content:flex-end">
+          <button class="btn secondary" id="addStudentBtn">+ Tambah</button>
+          <button class="btn warn" id="copyRosterBtn">Pindah Kelas</button>
+          <button class="btn primary" id="saveRosterBtn">Simpan</button>
+        </div>
+      </div>
+      <div class="class-delete-wrap" id="classDeleteWrap"></div>
+      <div class="small" style="margin-top:8px">
+        Data siswa yang disimpan akan langsung digunakan pada menu Presensi dan rekap.
+      </div>
+    </div>
+
+    <div class="roster-list" id="rosterList"></div>
+    <div class="small" id="rosterHint" style="margin-top:12px"></div>
+  </div>
+</div>
+
+
+ <div class="holiday-bottom">
+        <div class="in">
+      
+          <button class="btn" id="backHolidayBtn2" style="flex:1">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Kembali</span>
+          </button>
+      
+          <button class="btn primary" id="saveHolidayBtn" style="flex:1">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Simpan Libur</span>
+          </button>
+      
+        </div>
+      </div> 
+<div class="toast" id="toast"></div>
+
+<script>
+const STATUS = [
+  { k: "H", l: "Hadir", c: "H" },
+  { k: "S", l: "Sakit", c: "S" },
+  { k: "I", l: "Izin", c: "I" },
+  { k: "A", l: "Alpha", c: "A" },
+];
+
+const CLASS_ORDER = ["1A","1B","2A","2B","3A","3B","4A","4B","5A","5B","6A","6B"];
+const DEFAULT_ACCOUNTS = [
+  { code:"PJOK", name:"PJOK", subjectCode:"PJOK", teacherName:"Guru PJOK", allowedClasses:CLASS_ORDER, pin:"123456" },
+  { code:"PAI1", name:"PAI 1", subjectCode:"PAI1", teacherName:"Guru PAI 1", allowedClasses:["1A","1B","2A","2B","3A","3B"], pin:"123456" },
+  { code:"PAI2", name:"PAI 2", subjectCode:"PAI2", teacherName:"Guru PAI 2", allowedClasses:["4A","4B","5A","5B","6A","6B"], pin:"123456" },
+];
+
+const REPORT_MONTHS = [
+  { value: 1, label: "Januari" },
+  { value: 2, label: "Februari" },
+  { value: 3, label: "Maret" },
+  { value: 4, label: "April" },
+  { value: 5, label: "Mei" },
+  { value: 6, label: "Juni" },
+  { value: 7, label: "Juli" },
+  { value: 8, label: "Agustus" },
+  { value: 9, label: "September" },
+  { value: 10, label: "Oktober" },
+  { value: 11, label: "November" },
+  { value: 12, label: "Desember" },
+];
+
+const SEMESTER_OPTIONS = [
+  { value: "ganjil", label: "Semester Ganjil" },
+  { value: "genap", label: "Semester Genap" },
+];
+
+const HEADMASTER_NAME = "Isah Aisyah, A.Ma.Pd";
+const AUTH_SESSION_KEY = "sdypu-auth-mapel";
+const AUTH_PERSIST_KEY = "sdypu-auth-mapel-persist";
+const AUTH_LAST_ACCOUNT_KEY = "sdypu-auth-mapel-last";
+
+const el = (s) => document.querySelector(s);
+
+const state = {
+  classes: [],
+  accounts: DEFAULT_ACCOUNTS,
+  accountCode: "",
+  account: null,
+  classCode: localStorage.getItem("Presensi-mapel-class-code") || "1A",
+  date: todayIso(),
+  students: [],
+  attendance: {},
+  dirtyAttendance: false,
+  holidayDates: new Set(),
+};
+
+const holidayState = {
+  month: Number(localStorage.getItem("Presensi-holiday-month") || (new Date().getMonth() + 1)),
+  year: Number(localStorage.getItem("Presensi-holiday-year") || new Date().getFullYear()),
+  items: []
+};
+
+const reportState = {
+  semester: localStorage.getItem("Presensi-mapel-report-semester") || defaultSemester(),
+  year: Number(localStorage.getItem("Presensi-mapel-report-year") || currentAcademicStartYear()),
+};
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function todayIso(d = new Date()) {
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
+function parseLocalDate(iso) {
+  const [year, month, day] = String(iso || "").split("-").map(Number);
+  return new Date(year, (month || 1) - 1, day || 1);
+}
+
+function defaultSemester() {
+  return (new Date().getMonth() + 1) >= 7 ? "ganjil" : "genap";
+}
+
+function currentAcademicStartYear() {
+  const now = new Date();
+  const year = now.getFullYear();
+  return (now.getMonth() + 1) >= 7 ? year : year - 1;
+}
+
+function monthName(month) {
+  return REPORT_MONTHS.find(item => Number(item.value) === Number(month))?.label || "";
+}
+
+function prettyDate(d) {
+  return new Intl.DateTimeFormat("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  }).format(d);
+}
+
+function formatHolidayDate(iso) {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  }).format(parseLocalDate(iso));
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function setToast(message) {
+  const t = el("#toast");
+  if (!t) return;
+  t.textContent = message;
+  t.style.display = "block";
+  clearTimeout(setToast.timer);
+  setToast.timer = setTimeout(() => t.style.display = "none", 1800);
+}
+
+function showError(error) {
+  console.error(error);
+  setToast(error.message || "Terjadi kesalahan");
+}
+
+async function apiGet(params = {}) {
+  const url = new URL("/api", location.href);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && String(v).length > 0) url.searchParams.set(k, v);
+  });
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok || data.ok === false) throw new Error(data.error || "Gagal memuat data");
+  return data;
+}
+
+async function apiPost(action, body = {}) {
+  const res = await fetch("/api", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action, ...body }),
+  });
+  const data = await res.json();
+  if (!res.ok || data.ok === false) throw new Error(data.error || "Gagal menyimpan data");
+  return data;
+}
+
+function accountLabel(account) {
+  return account?.name || account?.code || "Akun";
+}
+
+function classLabel(code) {
+  const found = state.classes.find(x => x.code === code);
+  return found ? found.name : `Kelas ${code}`;
+}
+
+function getReportRoomName(classCode) {
+  const code = String(classCode || "");
+  return code.length >= 2 ? `KELAS ${code[0]} ${code[1]}` : `KELAS ${code}`;
+}
+
+function allowedClassCodes() {
+  const list = state.account?.allowedClasses?.length ? state.account.allowedClasses : CLASS_ORDER;
+  return list.filter(code => state.classes.some(c => c.code === code));
+}
+
+function getSubjectCode() {
+  return state.account?.subjectCode || state.account?.code || state.accountCode || "MAPEL";
+}
+
+function getAuthAccountCode() {
+  return sessionStorage.getItem(AUTH_SESSION_KEY) || localStorage.getItem(AUTH_SESSION_KEY) || "";
+}
+
+function setAuthAccountCode(accountCode, remember) {
+  if (remember) {
+    localStorage.setItem(AUTH_SESSION_KEY, accountCode);
+    localStorage.setItem(AUTH_PERSIST_KEY, "1");
+    sessionStorage.removeItem(AUTH_SESSION_KEY);
+  } else {
+    sessionStorage.setItem(AUTH_SESSION_KEY, accountCode);
+    localStorage.removeItem(AUTH_SESSION_KEY);
+    localStorage.removeItem(AUTH_PERSIST_KEY);
+  }
+  localStorage.setItem(AUTH_LAST_ACCOUNT_KEY, accountCode);
+}
+
+function clearAuth() {
+  sessionStorage.removeItem(AUTH_SESSION_KEY);
+  localStorage.removeItem(AUTH_SESSION_KEY);
+  localStorage.removeItem(AUTH_PERSIST_KEY);
+}
+
+function showLoginPage() {
+  const login = el("#loginPage");
+  const app = el("#appPage");
+  const holiday = el("#holidayPage");
+  if (login) login.classList.add("active");
+  if (app) app.classList.remove("active");
+  if (holiday) holiday.classList.remove("active");
+  document.body.classList.remove("app-ready");
+  document.title = "SD YPU - Login Mapel";
+}
+
+function showAppPage() {
+  const login = el("#loginPage");
+  const app = el("#appPage");
+  const holiday = el("#holidayPage");
+  if (login) login.classList.remove("active");
+  if (holiday) holiday.classList.remove("active");
+  if (app) app.classList.add("active");
+
+  ["overlay", "pinOverlay", "rosterOverlay"].forEach(id => {
+    const node = el(`#${id}`);
+    if (node) node.style.display = "none";
+  });
+
+  document.body.classList.add("app-ready");
+  document.title = `SD YPU - ${accountLabel(state.account)} ${classLabel(state.classCode)}`;
+}
+
+function syncLoginSelectors() {
+  const sel = el("#loginClassSelect");
+  if (!sel) return;
+  const last = localStorage.getItem(AUTH_LAST_ACCOUNT_KEY) || state.accounts[0]?.code || "PJOK";
+  sel.innerHTML = state.accounts.map(account => `
+    <option value="${account.code}" ${account.code === last ? "selected" : ""}>${escapeHtml(account.name)}</option>
+  `).join("");
+}
+
+function buildClassOptions(selectEl, current) {
+  if (!selectEl) return;
+  const allowed = allowedClassCodes();
+  if (!allowed.includes(state.classCode)) {
+    state.classCode = allowed[0] || state.classes[0]?.code || "1A";
+  }
+  selectEl.innerHTML = allowed.map(code => {
+    const item = state.classes.find(c => c.code === code) || { code, name: `Kelas ${code}` };
+    return `<option value="${item.code}" ${item.code === current ? "selected" : ""}>${escapeHtml(item.name)}</option>`;
+  }).join("");
+  selectEl.value = state.classCode;
+}
+
+function syncClassSelectors() {
+  buildClassOptions(el("#classSelect"), state.classCode);
+  const rosterSelect = el("#rosterClassSelect");
+  if (rosterSelect) buildClassOptions(rosterSelect, state.classCode);
+}
+
+function buildSemesterOptions(selectEl, current) {
+  if (!selectEl) return;
+  selectEl.innerHTML = SEMESTER_OPTIONS.map(item => `
+    <option value="${item.value}" ${item.value === current ? "selected" : ""}>${item.label}</option>
+  `).join("");
+}
+
+function buildAcademicYearOptions(selectEl, current) {
+  if (!selectEl) return;
+  const base = currentAcademicStartYear();
+  const years = [];
+  for (let y = base - 2; y <= base + 3; y += 1) years.push(y);
+  selectEl.innerHTML = years.map(year => `
+    <option value="${year}" ${Number(year) === Number(current) ? "selected" : ""}>${year}/${year + 1}</option>
+  `).join("");
+}
+
+function buildMonthOptions(selectEl, current) {
+  if (!selectEl) return;
+  selectEl.innerHTML = REPORT_MONTHS.map(item => `
+    <option value="${item.value}" ${Number(item.value) === Number(current) ? "selected" : ""}>${item.label}</option>
+  `).join("");
+}
+
+function buildYearOptions(selectEl, current) {
+  if (!selectEl) return;
+  const base = new Date().getFullYear();
+  const years = [];
+  for (let y = base - 2; y <= base + 3; y += 1) years.push(y);
+  selectEl.innerHTML = years.map(year => `
+    <option value="${year}" ${Number(year) === Number(current) ? "selected" : ""}>${year}</option>
+  `).join("");
+}
+
+function syncReportSelectors() {
+  buildSemesterOptions(el("#reportSemesterSelect"), reportState.semester);
+  buildAcademicYearOptions(el("#reportYearSelect"), reportState.year);
+}
+
+async function loadClasses() {
+  try {
+    const data = await apiGet({ action: "classes" });
+    state.classes = data.classes || [];
+  } catch (error) {
+    state.classes = CLASS_ORDER.map(code => ({ code, name: `Kelas ${code}` }));
+  }
+
+  if (!state.classes.length) {
+    state.classes = CLASS_ORDER.map(code => ({ code, name: `Kelas ${code}` }));
+  }
+}
+
+async function loadAccounts() {
+  try {
+    const data = await apiGet({ action: "accounts" });
+    const accounts = data.accounts || [];
+    state.accounts = accounts.length ? accounts : DEFAULT_ACCOUNTS;
+  } catch (error) {
+    state.accounts = DEFAULT_ACCOUNTS;
+  }
+}
+
+function applyAccount(accountCode) {
+  const found = state.accounts.find(account => account.code === accountCode) || state.accounts[0] || DEFAULT_ACCOUNTS[0];
+  state.accountCode = found.code;
+  state.account = found;
+
+  const allowed = allowedClassCodes();
+  const savedClass = localStorage.getItem(`Presensi-mapel-class-code-${state.accountCode}`) || localStorage.getItem("Presensi-mapel-class-code") || state.classCode;
+  state.classCode = allowed.includes(savedClass) ? savedClass : (allowed[0] || "1A");
+  localStorage.setItem("Presensi-mapel-class-code", state.classCode);
+  localStorage.setItem(`Presensi-mapel-class-code-${state.accountCode}`, state.classCode);
+  syncClassSelectors();
+}
+
+function getLoginPinForAccount(accountCode) {
+  const found = state.accounts.find(item => item.code === accountCode);
+  const apiPin = found?.pin ? String(found.pin) : "";
+  const localPin = localStorage.getItem(`sdypu.mapel.pin.${accountCode}`) || "123456";
+  return apiPin || localPin || "123456";
+}
+
+async function loadHolidayDatesForCurrentMonth() {
+  const d = parseLocalDate(state.date);
+  const data = await apiGet({
+    action: "holidayList",
+    month: d.getMonth() + 1,
+    year: d.getFullYear(),
+  });
+  state.holidayDates = new Set((data.holidays || []).map(h => h.date));
+}
+
+async function loadClassData() {
+  try {
+    const [students, attendance] = await Promise.all([
+      apiGet({ action: "students", classCode: state.classCode }),
+      apiGet({ action: "attendance", classCode: state.classCode, date: state.date, subjectCode: getSubjectCode() }),
+    ]);
+    state.students = students.students || [];
+    state.students.sort((a, b) => (a.name || "").localeCompare(b.name || "", "id"));
+    state.attendance = {};
+    (attendance.records || []).forEach(row => {
+      state.attendance[String(row.studentId)] = { status: row.status, note: row.note || "" };
+    });
+  } catch (error) {
+    state.students = [];
+    state.attendance = {};
+    showError(error);
+  }
+
+  state.dirtyAttendance = false;
+
+  try {
+    await loadHolidayDatesForCurrentMonth();
+  } catch (error) {
+    state.holidayDates = new Set();
+  }
+
+  render();
+}
+
+function renderTop() {
+  syncClassSelectors();
+  const dateInput = el("#attendanceDate");
+  if (dateInput) dateInput.value = state.date;
+  syncSaveButtons();
+}
+
+function syncSaveButtons() {
+  const label = state.dirtyAttendance ? "Simpan *" : "Simpan";
+  const saveBtn = el("#saveBtn");
+  if (saveBtn) {
+    saveBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>${label}</span>`;
+  }
+}
+
+function renderList() {
+  const q = el("#q")?.value.trim().toLowerCase() || "";
+  const list = state.students.filter(student => {
+    const label = `${student.name || ""} ${student.nisn || ""}`.toLowerCase();
+    return !q || label.includes(q);
+  });
+  const isHolidaySelected = state.holidayDates?.has(state.date);
+
+  const listEl = el("#list");
+  if (!listEl) return;
+
+  listEl.innerHTML = list.length ? list.map((student, idx) => {
+    const current = isHolidaySelected ? "" : (state.attendance[String(student.id)]?.status || "");
+    return `
+      <div class="student">
+        <div class="head">
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div class="rownum">${idx + 1}</div>
+            <div>
+              <div class="nisn">NISN ${escapeHtml(student.nisn || "-")}</div>
+              <div class="name">${escapeHtml(student.name || "")}</div>
+            </div>
+          </div>
+          <div class="badge ${current ? "s-"+current : "empty"}">${current ? current : "&nbsp;"}</div>
+        </div>
+        <div class="choices">
+          ${STATUS.map(st => `
+            <button class="choice ${current === st.k ? "active " + st.c : ""}" data-id="${student.id}" data-st="${st.k}" ${isHolidaySelected ? "disabled" : ""}>
+              ${st.l}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("") : `<div class="empty">Belum ada siswa aktif di ${escapeHtml(classLabel(state.classCode))}.</div>`;
+
+  listEl.querySelectorAll(".choice").forEach(btn => {
+    btn.addEventListener("click", () => setAttendanceLocal(btn.dataset.id, btn.dataset.st));
+  });
+}
+
+function render() {
+  renderTop();
+  renderList();
+  document.title = `SD YPU - ${accountLabel(state.account)} ${classLabel(state.classCode)}`;
+}
+
+function setAttendanceLocal(studentId, status) {
+  if (state.holidayDates?.has(state.date)) {
+    setToast("Tanggal ini sedang libur!");
+    return;
+  }
+  const student = state.students.find(s => String(s.id) === String(studentId));
+  if (!student) return;
+  state.attendance[String(studentId)] = { status, note: "" };
+  state.dirtyAttendance = true;
+  renderTop();
+  renderList();
+}
+
+function bulkSet(status) {
+  if (state.holidayDates?.has(state.date)) {
+    setToast("Tanggal ini sedang libur!");
+    return;
+  }
+  state.students.forEach(student => {
+    state.attendance[String(student.id)] = { status, note: "" };
+  });
+  state.dirtyAttendance = true;
+  renderTop();
+  renderList();
+}
+
+function clearAllAttendance() {
+  if (state.holidayDates?.has(state.date)) {
+    setToast("Tanggal ini sedang libur!");
+    return;
+  }
+  state.attendance = {};
+  state.dirtyAttendance = true;
+  renderTop();
+  renderList();
+  setToast("Semua presensi dikosongkan");
+}
+
+async function saveAttendance() {
+  if (state.holidayDates?.has(state.date)) {
+    setToast("Tanggal ini sedang libur!");
+    return;
+  }
+
+  try {
+    const records = state.students
+      .map(student => ({
+        studentId: student.id,
+        status: state.attendance[String(student.id)]?.status || "",
+      }))
+      .filter(row => ["H", "S", "I", "A"].includes(row.status));
+
+    await apiPost("saveAttendance", {
+      classCode: state.classCode,
+      date: state.date,
+      subjectCode: getSubjectCode(),
+      records,
+      replace: true,
+    });
+
+    state.dirtyAttendance = false;
+    renderTop();
+    setToast("Presensi tersimpan");
+  } catch (error) {
+    showError(error);
+  }
+}
+
+async function confirmDiscardIfDirty() {
+  if (!state.dirtyAttendance) return true;
+  return confirm("Ada perubahan presensi yang belum disimpan. Lanjutkan dan buang perubahan ini?");
+}
+
+async function changeClass(nextClassCode) {
+  if (!(await confirmDiscardIfDirty())) {
+    el("#classSelect").value = state.classCode;
+    return;
+  }
+  state.classCode = nextClassCode;
+  localStorage.setItem("Presensi-mapel-class-code", state.classCode);
+  localStorage.setItem(`Presensi-mapel-class-code-${state.accountCode}`, state.classCode);
+  await loadClassData();
+}
+
+async function changeDate(nextDate) {
+  if (!nextDate) return;
+  if (!(await confirmDiscardIfDirty())) {
+    el("#attendanceDate").value = state.date;
+    return;
+  }
+  state.date = nextDate;
+  await loadClassData();
+}
+
+function openSheet() {
+  syncReportSelectors();
+  const overlay = el("#overlay");
+  if (overlay) overlay.style.display = "flex";
+}
+
+function closeSheet() {
+  const overlay = el("#overlay");
+  if (overlay) overlay.style.display = "none";
+}
+
+function openHolidayPage() {
+  el("#appPage")?.classList.remove("active");
+  el("#holidayPage")?.classList.add("active");
+  document.body.classList.remove("app-ready");
+  document.title = "SD YPU - Kelola Hari Libur";
+
+  buildMonthOptions(el("#holidayMonthSelect"), holidayState.month);
+  buildYearOptions(el("#holidayYearSelect"), holidayState.year);
+
+  loadHolidayList().catch(showError);
+}
+
+function closeHolidayPage() {
+  el("#holidayPage")?.classList.remove("active");
+  showAppPage();
+}
+
+async function saveHoliday() {
+  const date = el("#holidayDate")?.value || "";
+  const note = el("#holidayNote")?.value.trim() || "";
+  if (!date) {
+    setToast("Pilih tanggal libur");
+    return;
+  }
+  await apiPost("saveHoliday", {
+    classCode: state.classCode,
+    date,
+    note
+  });
+  setToast("Data libur tersimpan!");
+  el("#holidayDate").value = "";
+  el("#holidayNote").value = "";
+  await loadHolidayList();
+}
+
+async function loadHolidayList() {
+  const month = Number(el("#holidayMonthSelect")?.value || holidayState.month);
+  const year = Number(el("#holidayYearSelect")?.value || holidayState.year);
+
+  holidayState.month = month;
+  holidayState.year = year;
+  localStorage.setItem("Presensi-holiday-month", String(month));
+  localStorage.setItem("Presensi-holiday-year", String(year));
+
+  const data = await apiGet({ action: "holidayList", month, year });
+  holidayState.items = data.holidays || [];
+  renderHolidayList();
+}
+
+function renderHolidayList() {
+  const box = el("#holidayList");
+  if (!box) return;
+  const items = holidayState.items || [];
+  if (!items.length) {
+    box.innerHTML = `<div class="empty">Belum ada libur di bulan ini.</div>`;
+    return;
+  }
+
+  box.innerHTML = items.map(item => `
+    <div class="holiday-item">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <div>
+          <div class="nisn">${escapeHtml(formatHolidayDate(item.date))}</div>
+          <div class="name">${escapeHtml(item.note || "-")}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="badge">${escapeHtml(item.classCode || "")}</div>
+          <button class="btn danger" data-del="${item.date}">
+            <i class="fa-solid fa-trash"></i><span>Hapus</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  box.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm("Hapus hari libur ini?")) return;
+      await apiPost("deleteHoliday", { date: btn.dataset.del });
+      setToast("Data libur dihapus");
+      await loadHolidayList();
+    });
+  });
+}
+
+function openChangePinSheet() {
+  const pinOverlay = el("#pinOverlay");
+  if (pinOverlay) pinOverlay.style.display = "flex";
+  ["#oldPin", "#newPin", "#confirmPin"].forEach(id => { const node = el(id); if (node) node.value = ""; });
+  setTimeout(() => el("#oldPin")?.focus(), 50);
+}
+
+function closePinSheet() {
+  const pinOverlay = el("#pinOverlay");
+  if (pinOverlay) pinOverlay.style.display = "none";
+}
+
+async function changePin() {
+  const oldPin = el("#oldPin")?.value.trim() || "";
+  const newPin = el("#newPin")?.value.trim() || "";
+  const confirmPin = el("#confirmPin")?.value.trim() || "";
+
+  if (!oldPin || !newPin || !confirmPin) {
+    setToast("Lengkapi semua PIN");
+    return;
+  }
+  if (!/^\d+$/.test(oldPin + newPin + confirmPin)) {
+    setToast("PIN hanya angka");
+    return;
+  }
+  if (newPin !== confirmPin) {
+    setToast("Konfirmasi PIN tidak cocok");
+    return;
+  }
+  if (newPin.length < 4) {
+    setToast("PIN minimal 4 digit");
+    return;
+  }
+
+  try {
+    await apiPost("changeAccountPin", {
+      accountCode: state.accountCode,
+      oldPin,
+      newPin
+    });
+    const found = state.accounts.find(item => item.code === state.accountCode);
+    if (found) found.pin = newPin;
+    localStorage.setItem(`sdypu.mapel.pin.${state.accountCode}`, newPin);
+    setToast("PIN berhasil diubah");
+    closePinSheet();
+  } catch (error) {
+    showError(error);
+  }
+}
+
+async function loadSemesterReportData() {
+  const data = await apiGet({
+    action: "semesterReport",
+    classCode: state.classCode,
+    semester: reportState.semester,
+    year: reportState.year,
+    subjectCode: getSubjectCode(),
+    accountCode: state.accountCode,
+  });
+  return data.report;
+}
+
+function statusLabel(status) {
+  if (status === "H") return "✓";
+  if (status === "S") return "S";
+  if (status === "I") return "I";
+  if (status === "A") return "A";
+  return "";
+}
+
+function statusColorClass(status) {
+  if (status === "H") return "status-h";
+  if (status === "S") return "status-s";
+  if (status === "I") return "status-i";
+  if (status === "A") return "status-a";
+  return "";
+}
+
+function groupReportDaysByMonth(report) {
+  const groups = [];
+  const days = [...(report.days || [])].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  for (const day of days) {
+    const key = `${day.year}-${day.month}`;
+    let group = groups.find(item => item.key === key);
+    if (!group) {
+      group = { key, month: day.month, label: day.monthName || monthName(day.month), year: day.year, days: [] };
+      groups.push(group);
+    }
+    group.days.push(day);
+  }
+  return groups;
+}
+
+function validateReportHasDates(report) {
+  if (!report.days || !report.days.length) {
+    throw new Error("Belum ada data absen yang tersimpan untuk semester ini.");
+  }
+}
+
+function buildSemesterReportTable(report) {
+  const days = [...(report.days || [])].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const students = [...(report.students || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "", "id"));
+  const monthGroups = groupReportDaysByMonth({ ...report, days });
+  const holidaySet = new Set((report.holidays || []).map(h => h.date));
+
+  const colWeights = [3.1, 7.8, 19.0, 4.2, ...days.map(() => 2.05), 4.1, 4.1, 4.1, 4.1];
+  const totalWeight = colWeights.reduce((sum, value) => sum + value, 0);
+  const colgroup = colWeights.map(weight => `<col style="width:${((weight / totalWeight) * 100).toFixed(4)}%;">`).join("");
+
+  const monthHeader = monthGroups.map(group => `<th colspan="${group.days.length}" class="title-cell month-cell">${escapeHtml(group.label)}</th>`).join("");
+  const dateHeader = days.map(day => `<th class="date-head">${day.day}</th>`).join("");
+
+  const rows = students.map((student, index) => {
+    const totals = student.totals || { H: 0, S: 0, I: 0, A: 0 };
+    const cells = days.map(day => {
+      if (day.isHoliday || holidaySet.has(day.date)) return `<td class="day-cell holiday-cell"></td>`;
+      const status = student.attendance?.[day.date] || "";
+      return `<td class="day-cell ${statusColorClass(status)}">${statusLabel(status)}</td>`;
+    }).join("");
+
+    return `
+      <tr>
+        <td class="centre num-cell">${index + 1}</td>
+        <td class="left student-nisn">${escapeHtml(student.nisn || "")}</td>
+        <td class="left student-name">${escapeHtml(student.name || "")}</td>
+        <td>${escapeHtml(student.gender || "L")}</td>
+        ${cells}
+        <td class="count">${totals.H > 0 ? totals.H : ""}</td>
+        <td class="count">${totals.S > 0 ? totals.S : ""}</td>
+        <td class="count">${totals.I > 0 ? totals.I : ""}</td>
+        <td class="count">${totals.A > 0 ? totals.A : ""}</td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <table class="report-table">
+      <colgroup>${colgroup}</colgroup>
+      <thead>
+        <tr>
+          <th colspan="2" rowspan="2" class="title-cell nomor-head">NOMOR</th>
+          <th rowspan="3" class="title-cell name-head">NAMA SISWA</th>
+          <th rowspan="3" class="title-cell lp-head">L/P</th>
+          <th colspan="${days.length}" class="title-cell year-cell">Tahun ${escapeHtml(report.calendarYear || "")}</th>
+          <th rowspan="3" class="title-cell count-head">Hadir</th>
+          <th rowspan="3" class="title-cell count-head">Sakit</th>
+          <th rowspan="3" class="title-cell count-head">Ijin</th>
+          <th rowspan="3" class="title-cell count-head">Alpha</th>
+        </tr>
+        <tr>${monthHeader}</tr>
+        <tr>
+          <th class="title-cell">URUT</th>
+          <th class="title-cell">NISN</th>
+          ${dateHeader}
+        </tr>
+        <tr class="spacer-row">
+          <th></th><th></th><th></th><th></th>${days.map(() => `<th></th>`).join("")}<th></th><th></th><th></th><th></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function buildReportHtml(report) {
+  validateReportHasDates(report);
+  const titleClass = escapeHtml(report?.class?.name || "");
+  const classRoom = escapeHtml(getReportRoomName(report?.class?.code || ""));
+  const schoolYear = escapeHtml(report.academicYear || `${reportState.year}/${reportState.year + 1}`);
+  const semester = escapeHtml(report.semesterLabel || "");
+  const teacherName = escapeHtml(report.teacherName || state.account?.teacherName || accountLabel(state.account));
+  const studentsCount = report.students?.length || 0;
+  const reportTable = buildSemesterReportTable(report);
+
+  return `<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laporan ${semester} ${titleClass}</title>
+<style>
+  @page { size: landscape; margin: 7mm; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Calibri, Arial, Helvetica, sans-serif; color:#000; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .page { padding:0; }
+  .header { text-align:center; margin-bottom:8px; }
+  .header .h1, .header .h2, .header .h3 { font-size:14px; font-weight:700; margin:0; line-height:1.2; }
+  .header .h3 { margin-top:4px; }
+  .meta { font-size:11px; margin:6px 0 8px; display:flex; justify-content:space-between; }
+  .report-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:9px; }
+  .report-table th, .report-table td { border:1px solid #000; padding:1px 2px; text-align:center; vertical-align:middle; line-height:1.05; height:18px; }
+  .report-table thead th { background:#f2f2f2; font-weight:700; height:20px; }
+  .report-table .year-cell { background:#111 !important; color:#111 !important; }
+  .report-table .spacer-row th { height:6px; padding:0; font-size:1px; background:#fff; }
+  .report-table .student-nisn, .report-table .student-name { text-align:left !important; white-space:nowrap; overflow:hidden; }
+  .report-table .student-name { font-size:8px; }
+  .report-table .date-head { font-size:8px; padding:1px 0; }
+  .day-cell { font-weight:700; font-size:9px; }
+  .holiday-cell { background:#ff0000 !important; color:#000; }
+  .status-h { color:#000; }
+  .status-s { color:#d97706; }
+  .status-i { color:#2563eb; }
+  .status-a { color:#dc2626; }
+  .count { font-weight:700; }
+  .report-footer { margin-top:0; display:flex; justify-content:flex-end; }
+  .report-footer .block { width:220px; text-align:center; font-size:11px; }
+  .report-footer .date { margin-top:2px; }
+  .report-footer .position { margin-top:6px; margin-bottom:54px; font-weight:700; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="h1">DAFTAR HADIR SISWA SD YPU</div>
+      <div class="h2">TAHUN PELAJARAN ${schoolYear}</div>
+      <div class="h3">Jenis Rombel: Kelas Utama - Nama Rombel: ${classRoom} - ${semester} - Guru ${escapeHtml(state.account?.name || "Mapel")} : ${teacherName}</div>
+    </div>
+    <div class="meta"><div>${semester}</div><div>Jumlah siswa: ${studentsCount}</div></div>
+    ${reportTable}
+    <div class="report-footer">
+      <div class="block">
+        <div class="date">Bandung, ${new Intl.DateTimeFormat("id-ID", { day:"2-digit", month:"long", year:"numeric" }).format(new Date())}</div>
+        <div class="position">Kepala Sekolah</div>
+        <div><strong>${HEADMASTER_NAME}</strong></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+async function printMonthlyReport() {
+  try {
+    const report = await loadSemesterReportData();
+    const html = buildReportHtml(report);
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.style.opacity = "0";
+    iframe.style.pointerEvents = "none";
+    iframe.srcdoc = html;
+    document.body.appendChild(iframe);
+    iframe.onload = () => {
+      setTimeout(() => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+        } catch (err) {
+          console.error(err);
+          showError(new Error("Gagal membuka dialog cetak."));
+        } finally {
+          setTimeout(() => iframe.remove(), 1000);
+        }
+      }, 500);
+    };
+  } catch (error) {
+    showError(error);
+  }
+}
+
+function styleCell(cell, style) {
+  cell.s = style;
+  return cell;
+}
+
+function excelCell(XLSX, r, c) {
+  return XLSX.utils.encode_cell({ r, c });
+}
+
+function createReportWorkbook(report) {
+  if (!window.XLSX) throw new Error("Library Excel belum dimuat.");
+  validateReportHasDates(report);
+
+  const XLSX = window.XLSX;
+  const wb = XLSX.utils.book_new();
+  const days = [...(report.days || [])].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const students = [...(report.students || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "", "id"));
+  const monthGroups = groupReportDaysByMonth({ ...report, days });
+  const holidaySet = new Set((report.holidays || []).map(h => h.date));
+  const lastCol = 7 + days.length;
+  const summaryStartCol = 4 + days.length;
+  const classRoom = getReportRoomName(report?.class?.code || "");
+  const teacherName = report.teacherName || state.account?.teacherName || accountLabel(state.account);
+  const mapelName = state.account?.name || "Mapel";
+
+  const totalCols = lastCol + 1;
+  const blankRow = () => Array(totalCols).fill("");
+  const rows = [];
+  rows.push(["DAFTAR HADIR SISWA SD YPU", ...Array(totalCols - 1).fill("")]);
+  rows.push([`TAHUN PELAJARAN ${report.academicYear || `${reportState.year}/${reportState.year + 1}`}`, ...Array(totalCols - 1).fill("")]);
+  rows.push([`Jenis Rombel: Kelas Utama - Nama Rombel: ${classRoom} - ${report.semesterLabel || ""} - Guru ${mapelName} : ${teacherName}`, ...Array(totalCols - 1).fill("")]);
+  rows.push(blankRow());
+
+  const row5 = blankRow();
+  row5[0] = "NOMOR";
+  row5[2] = "NAMA SISWA";
+  row5[3] = "L/P";
+  row5[4] = `Tahun ${report.calendarYear || ""}`;
+  row5[summaryStartCol] = "Hadir";
+  row5[summaryStartCol + 1] = "Sakit";
+  row5[summaryStartCol + 2] = "Ijin";
+  row5[summaryStartCol + 3] = "Alpha";
+  rows.push(row5);
+
+  const row6 = blankRow();
+  let col = 4;
+  monthGroups.forEach(group => {
+    row6[col] = group.label;
+    col += group.days.length;
+  });
+  rows.push(row6);
+
+  const row7 = blankRow();
+  row7[0] = "URUT";
+  row7[1] = "NISN";
+  days.forEach((day, idx) => { row7[4 + idx] = day.day; });
+  rows.push(row7);
+
+  rows.push(blankRow());
+
+  students.forEach((student, index) => {
+    const totals = student.totals || { H: 0, S: 0, I: 0, A: 0 };
+    const row = blankRow();
+    row[0] = index + 1;
+    row[1] = student.nisn || "";
+    row[2] = student.name || "";
+    row[3] = student.gender || "L";
+    days.forEach((day, idx) => {
+      row[4 + idx] = day.isHoliday || holidaySet.has(day.date) ? "" : statusLabel(student.attendance?.[day.date] || "");
+    });
+    row[summaryStartCol] = totals.H > 0 ? totals.H : "";
+    row[summaryStartCol + 1] = totals.S > 0 ? totals.S : "";
+    row[summaryStartCol + 2] = totals.I > 0 ? totals.I : "";
+    row[summaryStartCol + 3] = totals.A > 0 ? totals.A : "";
+    rows.push(row);
+  });
+
+  const footerDateRow = rows.length;
+  const footerNameRow = footerDateRow + 5;
+  while (rows.length <= footerNameRow) rows.push(blankRow());
+  rows[footerDateRow][summaryStartCol] = `Bandung, ${new Intl.DateTimeFormat("id-ID", { day:"2-digit", month:"long", year:"numeric" }).format(new Date())}`;
+  rows[footerDateRow + 1][summaryStartCol] = "Kepala Sekolah";
+  rows[footerNameRow][summaryStartCol] = HEADMASTER_NAME;
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  ws["!cols"] = [
+    { wch: 8.78 },
+    { wch: 12.78 },
+    { wch: 30.78 },
+    { wch: 6.78 },
+    ...days.map(() => ({ wch: 4.78 })),
+    { wch: 5.78 }, { wch: 5.78 }, { wch: 5.78 }, { wch: 5.78 },
+  ];
+
+  ws["!rows"] = [
+    { hpt: 18 }, { hpt: 18 }, { hpt: 18 }, { hpt: 7.95 },
+    { hpt: 19.95 }, { hpt: 19.95 }, { hpt: 19.95 }, { hpt: 6 },
+  ];
+  for (let i = 0; i < students.length; i += 1) ws["!rows"].push({ hpt: 18 });
+  while (ws["!rows"].length <= footerNameRow) ws["!rows"].push({ hpt: 18 });
+
+  const thinBorder = {
+    top: { style: "thin", color: { rgb: "000000" } },
+    bottom: { style: "thin", color: { rgb: "000000" } },
+    left: { style: "thin", color: { rgb: "000000" } },
+    right: { style: "thin", color: { rgb: "000000" } },
+  };
+  const styleTitle = { font: { bold: true, sz: 14, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
+  const styleHeader = { font: { bold: true, sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: true }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
+  const styleDateHeader = { font: { bold: true, sz: 8, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
+  const styleYear = { font: { bold: true, sz: 11, color: { rgb: "111111" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "111111" } }, border: thinBorder };
+  const styleBody = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: false }, border: thinBorder };
+  const styleLeft = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
+  const styleName = { font: { sz: 8, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
+  const styleHoliday = { font: { sz: 11, name: "Calibri" }, fill: { patternType: "solid", fgColor: { rgb: "FF0000" } }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder };
+  const styleFooter = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
+  const styleFooterBold = { font: { bold: true, sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
+  const styleSpacer = { font: { sz: 1, color: { rgb: "FFFFFF" }, name: "Calibri" }, border: thinBorder };
+  const statusStyles = {
+    "✓": { font: { bold: true, sz: 11, color: { rgb: "000000" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder },
+    "S": { font: { bold: true, sz: 11, color: { rgb: "D97706" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder },
+    "I": { font: { bold: true, sz: 11, color: { rgb: "2563EB" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder },
+    "A": { font: { bold: true, sz: 11, color: { rgb: "DC2626" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder },
+  };
+
+  function setStyle(r, c, style) {
+    const addr = excelCell(XLSX, r, c);
+    if (!ws[addr]) ws[addr] = { t: "s", v: "" };
+    ws[addr].s = style;
+  }
+
+  for (let c = 0; c <= lastCol; c += 1) {
+    setStyle(0, c, styleTitle);
+    setStyle(1, c, styleTitle);
+    setStyle(2, c, styleTitle);
+  }
+
+  for (let r = 4; r <= 7; r += 1) {
+    for (let c = 0; c <= lastCol; c += 1) {
+      setStyle(r, c, r === 7 ? styleSpacer : styleHeader);
+    }
+  }
+  for (let c = 4; c < summaryStartCol; c += 1) setStyle(4, c, styleYear);
+  for (let c = 4; c < summaryStartCol; c += 1) setStyle(6, c, styleDateHeader);
+
+  const dataStartRow = 8;
+  students.forEach((student, rIdx) => {
+    const r = dataStartRow + rIdx;
+    for (let c = 0; c <= lastCol; c += 1) {
+      let style = styleBody;
+      if (c === 1) style = styleLeft;
+      if (c === 2) style = styleName;
+      if (c >= 4 && c < summaryStartCol) {
+        const day = days[c - 4];
+        const value = ws[excelCell(XLSX, r, c)]?.v || "";
+        style = (day?.isHoliday || holidaySet.has(day?.date)) ? styleHoliday : (statusStyles[String(value)] || styleBody);
+      }
+      setStyle(r, c, style);
+    }
+  });
+
+  for (let r = footerDateRow; r <= footerNameRow; r += 1) {
+    for (let c = summaryStartCol; c <= lastCol; c += 1) {
+      setStyle(r, c, r === footerNameRow || r === footerDateRow + 1 ? styleFooterBold : styleFooter);
+    }
+  }
+
+  const merges = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: lastCol } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: lastCol } },
+    { s: { r: 2, c: 0 }, e: { r: 2, c: lastCol } },
+    { s: { r: 4, c: 0 }, e: { r: 5, c: 1 } },
+    { s: { r: 4, c: 2 }, e: { r: 6, c: 2 } },
+    { s: { r: 4, c: 3 }, e: { r: 6, c: 3 } },
+    { s: { r: 4, c: 4 }, e: { r: 4, c: summaryStartCol - 1 } },
+    { s: { r: 4, c: summaryStartCol }, e: { r: 6, c: summaryStartCol } },
+    { s: { r: 4, c: summaryStartCol + 1 }, e: { r: 6, c: summaryStartCol + 1 } },
+    { s: { r: 4, c: summaryStartCol + 2 }, e: { r: 6, c: summaryStartCol + 2 } },
+    { s: { r: 4, c: summaryStartCol + 3 }, e: { r: 6, c: summaryStartCol + 3 } },
+  ];
+
+  let monthCol = 4;
+  monthGroups.forEach(group => {
+    if (group.days.length > 1) {
+      merges.push({ s: { r: 5, c: monthCol }, e: { r: 5, c: monthCol + group.days.length - 1 } });
+    }
+    monthCol += group.days.length;
+  });
+
+  for (let r = footerDateRow; r <= footerNameRow; r += 1) {
+    merges.push({ s: { r, c: summaryStartCol }, e: { r, c: lastCol } });
+  }
+
+  ws["!merges"] = merges;
+  ws["!ref"] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: footerNameRow, c: lastCol } });
+  ws["!margins"] = { left: 0.25, right: 0.25, top: 0.25, bottom: 0.25, header: 0.1, footer: 0.1 };
+  ws["!pageSetup"] = { orientation: "landscape", fitToWidth: 1, fitToHeight: 0 };
+
+  XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+  return wb;
+}
+
+async function exportMonthlyReportExcel() {
+  try {
+    const report = await loadSemesterReportData();
+    const wb = createReportWorkbook(report);
+    const filename = `laporan-absensi-${state.accountCode}-${report.class.code}-${report.semester}-${report.academicStartYear}-${report.academicStartYear + 1}.xlsx`;
+    window.XLSX.writeFile(wb, filename, { compression: true });
+  } catch (error) {
+    showError(error);
+  }
+}
+
+function logoutToLogin() {
+  clearAuth();
+  ["overlay", "pinOverlay", "rosterOverlay"].forEach(id => {
+    const node = el(`#${id}`);
+    if (node) node.style.display = "none";
+  });
+  state.accountCode = "";
+  state.account = null;
+  state.students = [];
+  state.attendance = {};
+  syncLoginSelectors();
+  showLoginPage();
+}
+
+async function loginWithAccount(accountCode, remember) {
+  setAuthAccountCode(accountCode, remember);
+  applyAccount(accountCode);
+  await loadClassData();
+  showAppPage();
+}
+
+async function init() {
+  try {
+    await loadClasses();
+    await loadAccounts();
+    syncLoginSelectors();
+    syncReportSelectors();
+
+    const savedAuthAccount = getAuthAccountCode();
+    if (savedAuthAccount && state.accounts.some(item => item.code === savedAuthAccount)) {
+      applyAccount(savedAuthAccount);
+      await loadClassData();
+      showAppPage();
+    } else {
+      showLoginPage();
+    }
+  } catch (error) {
+    showError(error);
+    showLoginPage();
+  } finally {
+    document.body.classList.remove("preload");
+    document.body.classList.add("preload-ready");
+  }
+}
+
+el("#classSelect")?.addEventListener("change", async () => changeClass(el("#classSelect").value).catch(showError));
+el("#attendanceDate")?.addEventListener("change", async () => changeDate(el("#attendanceDate").value).catch(showError));
+el("#q")?.addEventListener("input", renderList);
+el("#openSheet2")?.addEventListener("click", openSheet);
+el("#closeSheetBtn")?.addEventListener("click", closeSheet);
+el("#overlay")?.addEventListener("click", (e) => { if (e.target === el("#overlay")) closeSheet(); });
+el("#allH")?.addEventListener("click", () => bulkSet("H"));
+el("#clearAllAttendance")?.addEventListener("click", () => {
+  if (!confirm("Hapus seluruh presensi tanggal ini?")) return;
+  clearAllAttendance();
+});
+el("#saveBtn")?.addEventListener("click", () => saveAttendance().catch(showError));
+el("#holidayBtn")?.addEventListener("click", openHolidayPage);
+el("#backHolidayBtn2")?.addEventListener("click", closeHolidayPage);
+el("#showHolidayBtn")?.addEventListener("click", () => loadHolidayList().catch(showError));
+el("#saveHolidayBtn")?.addEventListener("click", () => saveHoliday().catch(showError));
+el("#changePinBtn")?.addEventListener("click", openChangePinSheet);
+el("#closePinSheet")?.addEventListener("click", closePinSheet);
+el("#cancelPinBtn")?.addEventListener("click", closePinSheet);
+el("#pinOverlay")?.addEventListener("click", (e) => { if (e.target === el("#pinOverlay")) closePinSheet(); });
+el("#savePinBtn")?.addEventListener("click", () => changePin().catch(showError));
+el("#reportSemesterSelect")?.addEventListener("change", () => {
+  reportState.semester = el("#reportSemesterSelect").value;
+  localStorage.setItem("Presensi-mapel-report-semester", reportState.semester);
+});
+el("#reportYearSelect")?.addEventListener("change", () => {
+  reportState.year = Number(el("#reportYearSelect").value);
+  localStorage.setItem("Presensi-mapel-report-year", String(reportState.year));
+});
+el("#printReportBtn")?.addEventListener("click", () => printMonthlyReport().catch(showError));
+el("#exportExcelBtn")?.addEventListener("click", () => exportMonthlyReportExcel().catch(showError));
+el("#loginForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const accountCode = el("#loginClassSelect")?.value || "";
+  const pin = el("#loginPin")?.value.trim() || "";
+  const remember = Boolean(el("#rememberLogin")?.checked);
+
+  if (!accountCode) {
+    setToast("Pilih akun mapel terlebih dahulu");
+    return;
+  }
+  if (!pin) {
+    setToast("Masukkan PIN");
+    return;
+  }
+  const expectedPin = getLoginPinForAccount(accountCode);
+  if (pin !== expectedPin) {
+    setToast("PIN tidak sesuai");
+    return;
+  }
+
+  await loginWithAccount(accountCode, remember);
+  if (el("#loginPin")) el("#loginPin").value = "";
+});
+el("#clearSaved")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  clearAuth();
+  setToast("Hubungi Operator Sekolah!");
+});
+el("#logoutBtn")?.addEventListener("click", () => {
+  if (state.dirtyAttendance) {
+    const ok = confirm("Ada perubahan yang belum disimpan. Tetap logout?");
+    if (!ok) return;
+  }
+  logoutToLogin();
+});
+
+init();
+
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+</body>
+</html>
