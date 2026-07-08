@@ -126,17 +126,6 @@ async function ensureSchema(env) {
   }
 
   await env.DB.prepare(`
-    CREATE TABLE IF NOT EXISTS holidays (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      class_code TEXT NOT NULL,
-      date TEXT NOT NULL UNIQUE,
-      note TEXT NOT NULL DEFAULT '',
-      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )
-  `).run();
-
-  await env.DB.prepare(`
     CREATE TABLE IF NOT EXISTS subject_attendance (
       date TEXT NOT NULL,
       class_code TEXT NOT NULL,
@@ -357,16 +346,6 @@ async function getAttendanceDates(env, classCode, startDate, endDate, subjectCod
   return (result.results || []).map(row => row.date);
 }
 
-async function getHolidays(env, classCode, startDate, endDate) {
-  const result = await env.DB.prepare(
-    `SELECT date, note
-     FROM holidays
-     WHERE date BETWEEN ? AND ?
-     ORDER BY date`
-  ).bind(startDate, endDate).all();
-
-  return result.results || [];
-}
 
 async function clearAttendance(env, classCode, date, subjectCode = "") {
   if (subjectCode) {
@@ -512,40 +491,6 @@ async function deleteClassRoster(env, classCode) {
   return true;
 }
 
-async function saveHoliday(env, classCode, date, note = "") {
-  await env.DB.prepare(
-    `INSERT INTO holidays (class_code, date, note, updated_at)
-     VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-     ON CONFLICT(date) DO UPDATE SET
-       class_code = excluded.class_code,
-       note = excluded.note,
-       updated_at = CURRENT_TIMESTAMP`
-  ).bind(classCode, date, String(note || "").trim()).run();
-
-  return true;
-}
-
-async function getHolidayList(env, month, year) {
-  const startDate = isoDate(year, month, 1);
-  const endDate = isoDate(year, month, daysInMonth(year, month));
-
-  const result = await env.DB.prepare(
-    `SELECT date, note, class_code AS classCode
-     FROM holidays
-     WHERE date BETWEEN ? AND ?
-     ORDER BY date`
-  ).bind(startDate, endDate).all();
-
-  return result.results || [];
-}
-
-async function deleteHoliday(env, date) {
-  const result = await env.DB.prepare(
-    "DELETE FROM holidays WHERE date = ?"
-  ).bind(date).run();
-
-  return result.meta?.changes || 0;
-}
 
 function makeReportStudents(students, attendanceRows) {
   const attendanceByStudent = new Map();
@@ -586,11 +531,6 @@ async function getMonthlyReport(env, classCode, month, year, subjectCode = "") {
 
   const students = await getStudents(env, classCode, false);
   const attendanceRows = await getAttendanceRange(env, classCode, startDate, endDate, subjectCode);
-  const holidays = await getHolidays(env, classCode, startDate, endDate);
-
-  const holidayMap = new Map();
-  for (const row of holidays) holidayMap.set(row.date, row.note || "");
-
   const days = Array.from({ length: totalDays }, (_, idx) => {
     const day = idx + 1;
     const date = isoDate(year, month, day);
@@ -601,8 +541,6 @@ async function getMonthlyReport(env, classCode, month, year, subjectCode = "") {
       monthName: monthName(month),
       year,
       weekday: weekdayShort(date),
-      isHoliday: holidayMap.has(date),
-      holidayNote: holidayMap.get(date) || "",
     };
   });
 
@@ -616,7 +554,6 @@ async function getMonthlyReport(env, classCode, month, year, subjectCode = "") {
     year,
     monthLabel: `${monthName(month)} ${year}`,
     days,
-    holidays,
     students: makeReportStudents(students, attendanceRows),
   };
 }
@@ -636,11 +573,6 @@ async function getSemesterReport(env, classCode, semester, academicStartYear, su
   const students = await getStudents(env, classCode, false);
   const attendanceRows = await getAttendanceRange(env, classCode, startDate, endDate, normalizedSubject);
   const attendanceDates = await getAttendanceDates(env, classCode, startDate, endDate, normalizedSubject);
-  const holidays = await getHolidays(env, classCode, startDate, endDate);
-
-  const holidayMap = new Map();
-  for (const row of holidays) holidayMap.set(row.date, row.note || "");
-
   const days = attendanceDates.map(date => {
     const [y, m, d] = date.split("-").map(Number);
     return {
@@ -650,8 +582,6 @@ async function getSemesterReport(env, classCode, semester, academicStartYear, su
       monthName: monthName(m),
       year: y,
       weekday: weekdayShort(date),
-      isHoliday: holidayMap.has(date),
-      holidayNote: holidayMap.get(date) || "",
     };
   });
 
@@ -678,7 +608,6 @@ async function getSemesterReport(env, classCode, semester, academicStartYear, su
     startDate,
     endDate,
     days,
-    holidays,
     students: makeReportStudents(students, attendanceRows),
   };
 }
@@ -713,15 +642,6 @@ export async function onRequest(context) {
 
       if (action === "accounts") {
         return json({ ok: true, accounts: await getAccounts(env) });
-      }
-
-      if (action === "holidayList") {
-        const month = normalizeMonth(url.searchParams.get("month"));
-        const year = normalizeYear(url.searchParams.get("year"));
-        if (!month || !year) return badRequest("Bulan atau tahun tidak valid.");
-
-        const holidays = await getHolidayList(env, month, year);
-        return json({ ok: true, holidays });
       }
 
       if (action === "students") {
@@ -783,31 +703,11 @@ export async function onRequest(context) {
         return json({ ok: true, saved });
       }
 
-      if (actionPost === "deleteHoliday") {
-        const date = String(payload.date || "").trim();
-        if (!date) return badRequest("Tanggal wajib diisi.");
-
-        await deleteHoliday(env, date);
-        return json({ ok: true });
-      }
-
       if (actionPost === "saveRoster") {
         const classCode = normalizeClassCode(payload.classCode);
         if (!isValidClassCode(classCode)) return badRequest("Kode kelas tidak valid.");
         const saved = await saveRoster(env, classCode, payload.students || []);
         return json({ ok: true, saved });
-      }
-
-      if (actionPost === "saveHoliday") {
-        const classCode = normalizeClassCode(payload.classCode);
-        const date = String(payload.date || "").trim();
-        const note = String(payload.note || "").trim();
-
-        if (!isValidClassCode(classCode)) return badRequest("Kode kelas tidak valid.");
-        if (!date) return badRequest("Tanggal wajib diisi.");
-
-        await saveHoliday(env, classCode, date, note);
-        return json({ ok: true });
       }
 
       if (actionPost === "changePin" || actionPost === "changeAccountPin") {

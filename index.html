@@ -331,21 +331,7 @@
     cursor:pointer;
   }
   .day.active { background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,245,235,.95)); border-color:#ffb15c; color:#d97706; box-shadow:0 8px 20px rgba(255,122,0,.12); }
-  .day.holiday-day{
-  background:rgba(255,241,242,.82);
-  color:#be123c;
-  opacity:.92;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  box-shadow:
-    0 0 12px rgba(225,29,72,.10),
-    inset 0 1px 0 rgba(255,255,255,.45);
-}
-
-.day.holiday-day .n{
-  color:#be123c;
-}
-  .day .n { font-size:18px; font-weight:800; margin-top:4px; }
+.day .n { font-size:18px; font-weight:800; margin-top:4px; }
   .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; }
   .stat { border-radius:16px; padding:12px 10px; text-align:center; border:1px solid var(--line); opacity:0.55;}
   .stat .num { font-size:22px; font-weight:900; }
@@ -548,35 +534,7 @@
         0 -8px 32px rgba(0,0,0,.06),
         inset 0 1px 0 rgba(255,255,255,.25);
   }
-
-  .holiday-bottom{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-  
-    background:rgba(255,255,255,.70);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-  
-    border-top:1px solid rgba(255,255,255,.25);
-  
-    box-shadow:
-        0 -8px 32px rgba(0,0,0,.06),
-        inset 0 1px 0 rgba(255,255,255,.25);
-  
-    z-index:20;
-  }
-  
-  .holiday-bottom .in{
-    width:min(96vw,1400px);
-    margin:0 auto;
-    padding:10px 20px;
-    display:flex;
-    gap:10px;
-  }
-  
-  .bottom .in{
+.bottom .in{
     width:min(96vw, 1400px);
     margin:0 auto;
     padding:10px 20px;
@@ -981,25 +939,6 @@
   }
 
   #loginPage .forgot:hover { text-decoration:underline; }
-
-
-#holidayPage .holiday-list{
-  margin-top:12px;
-  display:grid;
-  gap:10px;
-  max-height:none;
-  overflow:visible;
-  padding-right:0;
-}
-
-#holidayPage .holiday-item{
-  background:#f8fafc;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:12px;
-}
-  
-
 #loginPage form {
     display:flex;
     flex-direction:column;
@@ -1127,25 +1066,6 @@
   background:rgba(148,163,184,.22);
   margin:14px 0;
 }
-
-.holiday-cell{
-  background:#ffb3b3 !important;
-  -webkit-print-color-adjust:exact;
-  print-color-adjust:exact;
-}
-  
-.sheetbtn.holiday{
-  background:rgba(225,29,72,.08);
-  color:#be123c;
-  border:1px solid rgba(225,29,72,.25);
-}
-
-.holiday-top-card{
-  position: sticky;
-  top: 12px;
-  z-index: 30;
-}
-  
 /* Aurora */
 .header-card::before{
     content: "";
@@ -1169,176 +1089,8 @@
     filter: blur(45px);
     pointer-events: none;
   }
-
-.holiday-bottom{
-  display:none;
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:9999;
-
-  background:rgba(255,255,255,.75);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
-  border-top:1px solid rgba(255,255,255,.25);
-}
-
-#holidayPage.active ~ .holiday-bottom{
-  display:block;
-}
-
-#holidayPage .report-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr auto;
-  gap:8px;
-  align-items:end;
-}
-
 @media (max-width:700px){
-
-  #holidayPage .report-grid{
-    grid-template-columns:1fr;
-    gap:8px;
-  }
-
-  #holidayPage .holiday-show-btn{
-    width:100%;
-    height:56px;
-    margin-top:0;
-  }
-
-  #holidayPage .holiday-show-wrap{
-    margin-top:0;
-  }
-
 }
-  
-@media (max-width:700px){
-
-  #holidayPage .report-grid{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  #holidayPage .report-grid .field{
-    width:100%;
-  }
-
-  #holidayPage .holiday-show-btn{
-    width:100%;
-    height:56px;
-    justify-content:center;
-  }
-
-}
-
-#holidayPage{
-  padding: 12px 0 104px;
-}
-
-#holidayPage .holiday-top-card{
-  position: sticky;
-  top: -15px;
-  z-index: 40;
-
-  background:#fff !important;
-
-  border:2px solid rgba(255,122,0,.22);
-
-  box-shadow:
-    0 0 0 1px rgba(255,200,80,.25),
-    0 8px 24px rgba(255,122,0,.08);
-
-  overflow:hidden;
-}
-
-#holidayNote{
-  min-height:72px;
-  resize:none;
-  padding-top:12px;
-  line-height:1.4;
-}
-  
-#holidayPage .holiday-top-card .holiday-title{
-  position: relative;
-  z-index: 1;
-
-  text-align: center;
-  margin: 0 0 16px 0;
-
-  font-size: 20px;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: 0.3px;
-
-  background: linear-gradient(
-    90deg,
-    #d61f26 0%,
-    #ff7a00 55%,
-    #ffcc33 100%
-  );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow: 0 2px 0 rgba(255,255,255,.42);
-}
-
-@media (max-width:700px){
-  #holidayPage .holiday-top-card .holiday-title{
-    font-size:17px;
-  }
-}
-
-#holidayPage .holiday-top-card .field{
-  position: relative;
-  z-index: 1;
-}
-
-#holidayPage .holiday-list{
-  margin-top:12px;
-  display:grid;
-  gap:10px;
-  max-height:none;
-  overflow:visible;
-  padding-right:0;
-}
-
-#holidayPage .holiday-top-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:#fff;
-  pointer-events:none;
-  z-index:0;
-}
-  
-#holidayPage .report-grid .field{
-  margin-bottom:0;
-}
-
-#holidayPage .holiday-show-wrap{
-  display:flex;
-  align-items:end;
-}
-
-#holidayPage .holiday-show-btn{
-  height:48px;
-  min-height:48px;
-  padding:0 18px;
-  white-space:nowrap;
-}
-  
-#holidayPage .holiday-show-btn{
-  height:48px;
-  min-height:48px;
-  padding:0 18px;
-  white-space:nowrap;
-}
-  
 .header-card::after{
     content:"";
     position:absolute;
@@ -1529,63 +1281,6 @@
 </div>
 </div>
 
-<div id="holidayPage" class="page">
-  <div class="wrap">
-    
-      <div class="card holiday-top-card">
-        <div class="holiday-title">
-          📅 Daftar Hari Libur
-        </div>
-      
-        <div class="field">
-          <label for="holidayDate">Tanggal Libur</label>
-          <input class="input" id="holidayDate" type="date">
-        </div>
-      
-        <div class="field" style="margin-top:12px;">
-          <label for="holidayNote">Keterangan</label>
-        
-          <textarea
-            class="input"
-            id="holidayNote"
-            rows="2"
-            placeholder="Contoh: Idul Adha"></textarea>
-        </div>
-      </div>
-
-    <div class="card">
-      <div class="report-card" style="margin-bottom:0;">
-        <div class="report-grid">
-          <div class="field">
-            <label for="holidayMonthSelect">Bulan</label>
-            <select class="select" id="holidayMonthSelect"></select>
-          </div>
-
-          <div class="field">
-            <label for="holidayYearSelect">Tahun</label>
-            <select class="select" id="holidayYearSelect"></select>
-          </div>
-
-          <div class="holiday-show-wrap">
-            <button class="btn secondary" id="showHolidayBtn" style="
-              width:100%;
-              min-height:56px;
-              border:2px solid #cbd5e1;
-              box-shadow:0 0 0 1px rgba(148,163,184,.15);
-            ">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <span>Tampilkan</span>
-            </button>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="holiday-list" id="holidayList"></div>
-    </div>
-  </div>
-</div>
-  
 <div class="bottom">
   <div class="in">
     
@@ -1667,10 +1362,6 @@
     </div>
 
     <div class="sheetgrid" style="margin-top:12px">
-      <button class="sheetbtn holiday full" id="holidayBtn">
-        <i class="fa-solid fa-calendar-xmark"></i>
-        <span>Daftar Hari Libur</span>
-      </button>
       <button class="sheetbtn amber full" id="changePinBtn">
         <i class="fa-solid fa-key"></i>
         <span>Ubah PIN</span>
@@ -1771,21 +1462,6 @@
 </div>
 
 
- <div class="holiday-bottom">
-        <div class="in">
-      
-          <button class="btn" id="backHolidayBtn2" style="flex:1">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Kembali</span>
-          </button>
-      
-          <button class="btn primary" id="saveHolidayBtn" style="flex:1">
-            <i class="fa-solid fa-floppy-disk"></i>
-            <span>Simpan Libur</span>
-          </button>
-      
-        </div>
-      </div> 
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1840,13 +1516,6 @@ const state = {
   students: [],
   attendance: {},
   dirtyAttendance: false,
-  holidayDates: new Set(),
-};
-
-const holidayState = {
-  month: Number(localStorage.getItem("Presensi-holiday-month") || (new Date().getMonth() + 1)),
-  year: Number(localStorage.getItem("Presensi-holiday-year") || new Date().getFullYear()),
-  items: []
 };
 
 const reportState = {
@@ -1888,14 +1557,6 @@ function prettyDate(d) {
     month: "long",
     year: "numeric"
   }).format(d);
-}
-
-function formatHolidayDate(iso) {
-  return new Intl.DateTimeFormat("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  }).format(parseLocalDate(iso));
 }
 
 function escapeHtml(value) {
@@ -1991,10 +1652,8 @@ function clearAuth() {
 function showLoginPage() {
   const login = el("#loginPage");
   const app = el("#appPage");
-  const holiday = el("#holidayPage");
   if (login) login.classList.add("active");
   if (app) app.classList.remove("active");
-  if (holiday) holiday.classList.remove("active");
   document.body.classList.remove("app-ready");
   document.title = "SD YPU - Login Mapel";
 }
@@ -2002,9 +1661,7 @@ function showLoginPage() {
 function showAppPage() {
   const login = el("#loginPage");
   const app = el("#appPage");
-  const holiday = el("#holidayPage");
   if (login) login.classList.remove("active");
-  if (holiday) holiday.classList.remove("active");
   if (app) app.classList.add("active");
 
   ["overlay", "pinOverlay", "rosterOverlay"].forEach(id => {
@@ -2061,23 +1718,6 @@ function buildAcademicYearOptions(selectEl, current) {
   `).join("");
 }
 
-function buildMonthOptions(selectEl, current) {
-  if (!selectEl) return;
-  selectEl.innerHTML = REPORT_MONTHS.map(item => `
-    <option value="${item.value}" ${Number(item.value) === Number(current) ? "selected" : ""}>${item.label}</option>
-  `).join("");
-}
-
-function buildYearOptions(selectEl, current) {
-  if (!selectEl) return;
-  const base = new Date().getFullYear();
-  const years = [];
-  for (let y = base - 2; y <= base + 3; y += 1) years.push(y);
-  selectEl.innerHTML = years.map(year => `
-    <option value="${year}" ${Number(year) === Number(current) ? "selected" : ""}>${year}</option>
-  `).join("");
-}
-
 function syncReportSelectors() {
   buildSemesterOptions(el("#reportSemesterSelect"), reportState.semester);
   buildAcademicYearOptions(el("#reportYearSelect"), reportState.year);
@@ -2126,16 +1766,6 @@ function getLoginPinForAccount(accountCode) {
   return apiPin || localPin || "123456";
 }
 
-async function loadHolidayDatesForCurrentMonth() {
-  const d = parseLocalDate(state.date);
-  const data = await apiGet({
-    action: "holidayList",
-    month: d.getMonth() + 1,
-    year: d.getFullYear(),
-  });
-  state.holidayDates = new Set((data.holidays || []).map(h => h.date));
-}
-
 async function loadClassData() {
   try {
     const [students, attendance] = await Promise.all([
@@ -2156,11 +1786,6 @@ async function loadClassData() {
 
   state.dirtyAttendance = false;
 
-  try {
-    await loadHolidayDatesForCurrentMonth();
-  } catch (error) {
-    state.holidayDates = new Set();
-  }
 
   render();
 }
@@ -2186,13 +1811,11 @@ function renderList() {
     const label = `${student.name || ""} ${student.nisn || ""}`.toLowerCase();
     return !q || label.includes(q);
   });
-  const isHolidaySelected = state.holidayDates?.has(state.date);
-
   const listEl = el("#list");
   if (!listEl) return;
 
   listEl.innerHTML = list.length ? list.map((student, idx) => {
-    const current = isHolidaySelected ? "" : (state.attendance[String(student.id)]?.status || "");
+    const current = state.attendance[String(student.id)]?.status || "";
     return `
       <div class="student">
         <div class="head">
@@ -2207,7 +1830,7 @@ function renderList() {
         </div>
         <div class="choices">
           ${STATUS.map(st => `
-            <button class="choice ${current === st.k ? "active " + st.c : ""}" data-id="${student.id}" data-st="${st.k}" ${isHolidaySelected ? "disabled" : ""}>
+            <button class="choice ${current === st.k ? "active " + st.c : ""}" data-id="${student.id}" data-st="${st.k}">
               ${st.l}
             </button>
           `).join("")}
@@ -2228,10 +1851,6 @@ function render() {
 }
 
 function setAttendanceLocal(studentId, status) {
-  if (state.holidayDates?.has(state.date)) {
-    setToast("Tanggal ini sedang libur!");
-    return;
-  }
   const student = state.students.find(s => String(s.id) === String(studentId));
   if (!student) return;
   state.attendance[String(studentId)] = { status, note: "" };
@@ -2241,10 +1860,6 @@ function setAttendanceLocal(studentId, status) {
 }
 
 function bulkSet(status) {
-  if (state.holidayDates?.has(state.date)) {
-    setToast("Tanggal ini sedang libur!");
-    return;
-  }
   state.students.forEach(student => {
     state.attendance[String(student.id)] = { status, note: "" };
   });
@@ -2254,10 +1869,6 @@ function bulkSet(status) {
 }
 
 function clearAllAttendance() {
-  if (state.holidayDates?.has(state.date)) {
-    setToast("Tanggal ini sedang libur!");
-    return;
-  }
   state.attendance = {};
   state.dirtyAttendance = true;
   renderTop();
@@ -2266,10 +1877,6 @@ function clearAllAttendance() {
 }
 
 async function saveAttendance() {
-  if (state.holidayDates?.has(state.date)) {
-    setToast("Tanggal ini sedang libur!");
-    return;
-  }
 
   try {
     const records = state.students
@@ -2330,91 +1937,6 @@ function openSheet() {
 function closeSheet() {
   const overlay = el("#overlay");
   if (overlay) overlay.style.display = "none";
-}
-
-function openHolidayPage() {
-  el("#appPage")?.classList.remove("active");
-  el("#holidayPage")?.classList.add("active");
-  document.body.classList.remove("app-ready");
-  document.title = "SD YPU - Kelola Hari Libur";
-
-  buildMonthOptions(el("#holidayMonthSelect"), holidayState.month);
-  buildYearOptions(el("#holidayYearSelect"), holidayState.year);
-
-  loadHolidayList().catch(showError);
-}
-
-function closeHolidayPage() {
-  el("#holidayPage")?.classList.remove("active");
-  showAppPage();
-}
-
-async function saveHoliday() {
-  const date = el("#holidayDate")?.value || "";
-  const note = el("#holidayNote")?.value.trim() || "";
-  if (!date) {
-    setToast("Pilih tanggal libur");
-    return;
-  }
-  await apiPost("saveHoliday", {
-    classCode: state.classCode,
-    date,
-    note
-  });
-  setToast("Data libur tersimpan!");
-  el("#holidayDate").value = "";
-  el("#holidayNote").value = "";
-  await loadHolidayList();
-}
-
-async function loadHolidayList() {
-  const month = Number(el("#holidayMonthSelect")?.value || holidayState.month);
-  const year = Number(el("#holidayYearSelect")?.value || holidayState.year);
-
-  holidayState.month = month;
-  holidayState.year = year;
-  localStorage.setItem("Presensi-holiday-month", String(month));
-  localStorage.setItem("Presensi-holiday-year", String(year));
-
-  const data = await apiGet({ action: "holidayList", month, year });
-  holidayState.items = data.holidays || [];
-  renderHolidayList();
-}
-
-function renderHolidayList() {
-  const box = el("#holidayList");
-  if (!box) return;
-  const items = holidayState.items || [];
-  if (!items.length) {
-    box.innerHTML = `<div class="empty">Belum ada libur di bulan ini.</div>`;
-    return;
-  }
-
-  box.innerHTML = items.map(item => `
-    <div class="holiday-item">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <div>
-          <div class="nisn">${escapeHtml(formatHolidayDate(item.date))}</div>
-          <div class="name">${escapeHtml(item.note || "-")}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="badge">${escapeHtml(item.classCode || "")}</div>
-          <button class="btn danger" data-del="${item.date}">
-            <i class="fa-solid fa-trash"></i><span>Hapus</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join("");
-
-  box.querySelectorAll("[data-del]").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      if (!confirm("Hapus hari libur ini?")) return;
-      await apiPost("deleteHoliday", { date: btn.dataset.del });
-      setToast("Data libur dihapus");
-      await loadHolidayList();
-    });
-  });
 }
 
 function openChangePinSheet() {
@@ -2520,7 +2042,6 @@ function buildSemesterReportTable(report) {
   const days = [...(report.days || [])].sort((a, b) => String(a.date).localeCompare(String(b.date)));
   const students = [...(report.students || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "", "id"));
   const monthGroups = groupReportDaysByMonth({ ...report, days });
-  const holidaySet = new Set((report.holidays || []).map(h => h.date));
 
   const colWeights = [3.1, 7.8, 19.0, 4.2, ...days.map(() => 2.05), 4.1, 4.1, 4.1, 4.1];
   const totalWeight = colWeights.reduce((sum, value) => sum + value, 0);
@@ -2532,7 +2053,6 @@ function buildSemesterReportTable(report) {
   const rows = students.map((student, index) => {
     const totals = student.totals || { H: 0, S: 0, I: 0, A: 0 };
     const cells = days.map(day => {
-      if (day.isHoliday || holidaySet.has(day.date)) return `<td class="day-cell holiday-cell"></td>`;
       const status = student.attendance?.[day.date] || "";
       return `<td class="day-cell ${statusColorClass(status)}">${statusLabel(status)}</td>`;
     }).join("");
@@ -2609,13 +2129,12 @@ function buildReportHtml(report) {
   .report-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:9px; }
   .report-table th, .report-table td { border:1px solid #000; padding:1px 2px; text-align:center; vertical-align:middle; line-height:1.05; height:18px; }
   .report-table thead th { background:#f2f2f2; font-weight:700; height:20px; }
-  .report-table .year-cell { background:#111 !important; color:#111 !important; }
+  .report-table .year-cell { background:#111 !important; color:#fff !important; }
   .report-table .spacer-row th { height:6px; padding:0; font-size:1px; background:#fff; }
   .report-table .student-nisn, .report-table .student-name { text-align:left !important; white-space:nowrap; overflow:hidden; }
   .report-table .student-name { font-size:8px; }
   .report-table .date-head { font-size:8px; padding:1px 0; }
   .day-cell { font-weight:700; font-size:9px; }
-  .holiday-cell { background:#ff0000 !important; color:#000; }
   .status-h { color:#000; }
   .status-s { color:#d97706; }
   .status-i { color:#2563eb; }
@@ -2699,7 +2218,6 @@ function createReportWorkbook(report) {
   const days = [...(report.days || [])].sort((a, b) => String(a.date).localeCompare(String(b.date)));
   const students = [...(report.students || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "", "id"));
   const monthGroups = groupReportDaysByMonth({ ...report, days });
-  const holidaySet = new Set((report.holidays || []).map(h => h.date));
   const lastCol = 7 + days.length;
   const summaryStartCol = 4 + days.length;
   const classRoom = getReportRoomName(report?.class?.code || "");
@@ -2749,7 +2267,7 @@ function createReportWorkbook(report) {
     row[2] = student.name || "";
     row[3] = student.gender || "L";
     days.forEach((day, idx) => {
-      row[4 + idx] = day.isHoliday || holidaySet.has(day.date) ? "" : statusLabel(student.attendance?.[day.date] || "");
+      row[4 + idx] = statusLabel(student.attendance?.[day.date] || "");
     });
     row[summaryStartCol] = totals.H > 0 ? totals.H : "";
     row[summaryStartCol + 1] = totals.S > 0 ? totals.S : "";
@@ -2792,11 +2310,10 @@ function createReportWorkbook(report) {
   const styleTitle = { font: { bold: true, sz: 14, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
   const styleHeader = { font: { bold: true, sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: true }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
   const styleDateHeader = { font: { bold: true, sz: 8, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
-  const styleYear = { font: { bold: true, sz: 11, color: { rgb: "111111" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "111111" } }, border: thinBorder };
+  const styleYear = { font: { bold: true, sz: 11, color: { rgb: "FFFFFF" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "111111" } }, border: thinBorder };
   const styleBody = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: false }, border: thinBorder };
   const styleLeft = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
   const styleName = { font: { sz: 8, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
-  const styleHoliday = { font: { sz: 11, name: "Calibri" }, fill: { patternType: "solid", fgColor: { rgb: "FF0000" } }, alignment: { horizontal: "center", vertical: "center" }, border: thinBorder };
   const styleFooter = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
   const styleFooterBold = { font: { bold: true, sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
   const styleSpacer = { font: { sz: 1, color: { rgb: "FFFFFF" }, name: "Calibri" }, border: thinBorder };
@@ -2837,7 +2354,7 @@ function createReportWorkbook(report) {
       if (c >= 4 && c < summaryStartCol) {
         const day = days[c - 4];
         const value = ws[excelCell(XLSX, r, c)]?.v || "";
-        style = (day?.isHoliday || holidaySet.has(day?.date)) ? styleHoliday : (statusStyles[String(value)] || styleBody);
+        style = statusStyles[String(value)] || styleBody;
       }
       setStyle(r, c, style);
     }
@@ -2952,10 +2469,6 @@ el("#clearAllAttendance")?.addEventListener("click", () => {
   clearAllAttendance();
 });
 el("#saveBtn")?.addEventListener("click", () => saveAttendance().catch(showError));
-el("#holidayBtn")?.addEventListener("click", openHolidayPage);
-el("#backHolidayBtn2")?.addEventListener("click", closeHolidayPage);
-el("#showHolidayBtn")?.addEventListener("click", () => loadHolidayList().catch(showError));
-el("#saveHolidayBtn")?.addEventListener("click", () => saveHoliday().catch(showError));
 el("#changePinBtn")?.addEventListener("click", openChangePinSheet);
 el("#closePinSheet")?.addEventListener("click", closePinSheet);
 el("#cancelPinBtn")?.addEventListener("click", closePinSheet);
