@@ -1251,6 +1251,8 @@
       </div>
     </div>
 
+    <div class="stats" id="stats"></div>
+
     <div class="action-row">
       <button class="quick-action logout" id="logoutBtn">
         <i class="fa-solid fa-right-from-bracket"></i>
@@ -1649,6 +1651,60 @@ function clearAuth() {
   localStorage.removeItem(AUTH_PERSIST_KEY);
 }
 
+
+const APP_PANEL_STATE_KEY = "sdypuMapelPanel";
+
+function isPanelOpen(selector) {
+  const node = el(selector);
+  return Boolean(node && node.style.display && node.style.display !== "none");
+}
+
+function isAppPanelState() {
+  return Boolean(history.state && history.state[APP_PANEL_STATE_KEY]);
+}
+
+function setBackPanelState(panel, mode = "push") {
+  const current = history.state || {};
+  if (current[APP_PANEL_STATE_KEY] === panel) return;
+  const nextState = { ...current, [APP_PANEL_STATE_KEY]: panel };
+  if (mode === "replace" && isAppPanelState()) {
+    history.replaceState(nextState, "");
+  } else {
+    history.pushState(nextState, "");
+  }
+}
+
+function closeVisiblePanelFromBack() {
+  if (isPanelOpen("#pinOverlay")) {
+    closePinSheet(true);
+    return true;
+  }
+
+  if (isPanelOpen("#rosterOverlay")) {
+    closeRoster(true);
+    return true;
+  }
+
+  if (isPanelOpen("#overlay")) {
+    closeSheet(true);
+    return true;
+  }
+
+  return false;
+}
+
+function closePanelByButton(closeFn) {
+  if (isAppPanelState()) {
+    history.back();
+  } else {
+    closeFn(true);
+  }
+}
+
+window.addEventListener("popstate", () => {
+  closeVisiblePanelFromBack();
+});
+
 function showLoginPage() {
   const login = el("#loginPage");
   const app = el("#appPage");
@@ -1794,7 +1850,29 @@ function renderTop() {
   syncClassSelectors();
   const dateInput = el("#attendanceDate");
   if (dateInput) dateInput.value = state.date;
+  renderStats();
   syncSaveButtons();
+}
+
+function currentAttendanceCounts() {
+  const counts = { H: 0, S: 0, I: 0, A: 0 };
+  state.students.forEach(student => {
+    const rec = state.attendance[String(student.id)];
+    if (rec && counts[rec.status] !== undefined) counts[rec.status]++;
+  });
+  return counts;
+}
+
+function renderStats() {
+  const statsEl = el("#stats");
+  if (!statsEl) return;
+  const counts = currentAttendanceCounts();
+  statsEl.innerHTML = STATUS.map(s => `
+    <div class="stat s-${s.c}">
+      <div class="num">${counts[s.k] || 0}</div>
+      <div class="lab">${s.l}</div>
+    </div>
+  `).join("");
 }
 
 function syncSaveButtons() {
@@ -1932,9 +2010,14 @@ function openSheet() {
   syncReportSelectors();
   const overlay = el("#overlay");
   if (overlay) overlay.style.display = "flex";
+  setBackPanelState("sheet");
 }
 
-function closeSheet() {
+function closeSheet(fromBack = false) {
+  if (!fromBack && isAppPanelState()) {
+    history.back();
+    return;
+  }
   const overlay = el("#overlay");
   if (overlay) overlay.style.display = "none";
 }
@@ -1942,13 +2025,33 @@ function closeSheet() {
 function openChangePinSheet() {
   const pinOverlay = el("#pinOverlay");
   if (pinOverlay) pinOverlay.style.display = "flex";
+  setBackPanelState("pin");
   ["#oldPin", "#newPin", "#confirmPin"].forEach(id => { const node = el(id); if (node) node.value = ""; });
   setTimeout(() => el("#oldPin")?.focus(), 50);
 }
 
-function closePinSheet() {
+function closePinSheet(fromBack = false) {
+  if (!fromBack && isAppPanelState()) {
+    history.back();
+    return;
+  }
   const pinOverlay = el("#pinOverlay");
   if (pinOverlay) pinOverlay.style.display = "none";
+}
+
+function openRoster() {
+  const rosterOverlay = el("#rosterOverlay");
+  if (rosterOverlay) rosterOverlay.style.display = "flex";
+  setBackPanelState("roster");
+}
+
+function closeRoster(fromBack = false) {
+  if (!fromBack && isAppPanelState()) {
+    history.back();
+    return;
+  }
+  const rosterOverlay = el("#rosterOverlay");
+  if (rosterOverlay) rosterOverlay.style.display = "none";
 }
 
 async function changePin() {
@@ -2129,7 +2232,7 @@ function buildReportHtml(report) {
   .report-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:9px; }
   .report-table th, .report-table td { border:1px solid #000; padding:1px 2px; text-align:center; vertical-align:middle; line-height:1.05; height:18px; }
   .report-table thead th { background:#f2f2f2; font-weight:700; height:20px; }
-  .report-table .year-cell { background:#111 !important; color:#fff !important; }
+  .report-table .year-cell { background:#f2f2f2 !important; color:#000 !important; }
   .report-table .spacer-row th { height:6px; padding:0; font-size:1px; background:#fff; }
   .report-table .student-nisn, .report-table .student-name { text-align:left !important; white-space:nowrap; overflow:hidden; }
   .report-table .student-name { font-size:8px; }
@@ -2310,7 +2413,7 @@ function createReportWorkbook(report) {
   const styleTitle = { font: { bold: true, sz: 14, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" } };
   const styleHeader = { font: { bold: true, sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: true }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
   const styleDateHeader = { font: { bold: true, sz: 8, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
-  const styleYear = { font: { bold: true, sz: 11, color: { rgb: "FFFFFF" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "111111" } }, border: thinBorder };
+  const styleYear = { font: { bold: true, sz: 11, color: { rgb: "000000" }, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center" }, fill: { patternType: "solid", fgColor: { rgb: "F2F2F2" } }, border: thinBorder };
   const styleBody = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "center", vertical: "center", wrapText: false }, border: thinBorder };
   const styleLeft = { font: { sz: 11, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
   const styleName = { font: { sz: 8, name: "Calibri" }, alignment: { horizontal: "left", vertical: "center", wrapText: false, shrinkToFit: true }, border: thinBorder };
@@ -2461,8 +2564,8 @@ el("#classSelect")?.addEventListener("change", async () => changeClass(el("#clas
 el("#attendanceDate")?.addEventListener("change", async () => changeDate(el("#attendanceDate").value).catch(showError));
 el("#q")?.addEventListener("input", renderList);
 el("#openSheet2")?.addEventListener("click", openSheet);
-el("#closeSheetBtn")?.addEventListener("click", closeSheet);
-el("#overlay")?.addEventListener("click", (e) => { if (e.target === el("#overlay")) closeSheet(); });
+el("#closeSheetBtn")?.addEventListener("click", () => closePanelByButton(closeSheet));
+el("#overlay")?.addEventListener("click", (e) => { if (e.target === el("#overlay")) closePanelByButton(closeSheet); });
 el("#allH")?.addEventListener("click", () => bulkSet("H"));
 el("#clearAllAttendance")?.addEventListener("click", () => {
   if (!confirm("Hapus seluruh presensi tanggal ini?")) return;
@@ -2470,10 +2573,12 @@ el("#clearAllAttendance")?.addEventListener("click", () => {
 });
 el("#saveBtn")?.addEventListener("click", () => saveAttendance().catch(showError));
 el("#changePinBtn")?.addEventListener("click", openChangePinSheet);
-el("#closePinSheet")?.addEventListener("click", closePinSheet);
-el("#cancelPinBtn")?.addEventListener("click", closePinSheet);
-el("#pinOverlay")?.addEventListener("click", (e) => { if (e.target === el("#pinOverlay")) closePinSheet(); });
+el("#closePinSheet")?.addEventListener("click", () => closePanelByButton(closePinSheet));
+el("#cancelPinBtn")?.addEventListener("click", () => closePanelByButton(closePinSheet));
+el("#pinOverlay")?.addEventListener("click", (e) => { if (e.target === el("#pinOverlay")) closePanelByButton(closePinSheet); });
 el("#savePinBtn")?.addEventListener("click", () => changePin().catch(showError));
+el("#closeRoster")?.addEventListener("click", () => closePanelByButton(closeRoster));
+el("#rosterOverlay")?.addEventListener("click", (e) => { if (e.target === el("#rosterOverlay")) closePanelByButton(closeRoster); });
 el("#reportSemesterSelect")?.addEventListener("change", () => {
   reportState.semester = el("#reportSemesterSelect").value;
   localStorage.setItem("Presensi-mapel-report-semester", reportState.semester);
